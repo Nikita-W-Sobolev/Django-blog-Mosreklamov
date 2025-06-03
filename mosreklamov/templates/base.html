@@ -1,0 +1,40 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ title }}</title>
+    <link type="text/css" href="{% static 'main_app/css/styles.css' %}" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+    <div class="header-wrapper">
+      <div class="header">
+        <div class="header-image">
+          <img src="{% static 'main_app/images/logo.png' %}" alt="Логотип">
+        </div>
+
+        <div class="contact-info">
+            <div class="mail">
+            <i class="fa-solid fa-square-envelope" style="color: purple; font-size: 30px;"></i>
+            <span>mosreklamov@mail.ru</span>
+            </div>
+
+            <div class="phone">
+                <i class="fa-solid fa-phone-volume" style="color: purple; font-size: 30px;"></i>
+                <div class="phone-text">
+                  <div class="phone-number"><strong>+7 (985) 190-44-00</strong></div>
+                  <a href="/" class="callback-link"><i>обратный звонок</i></a>
+                </div>
+            </div>
+        </div>
+      </div>
+    </div>
+
+    {% block content %} {% endblock %}
+
+    <footer>
+        <p>© 2024 Мой сайт</p>
+    </footer>
+</body>
+</html>
