@@ -1,18 +1,28 @@
 {% extends 'base.html' %}
 {% block content %}
+
 <h1>{{ title }}</h1>
+
 {% if articles %}
   <div class="articles">
     {% for article in articles %}
       <div class="article">
-        <h2>{{ article.title }}</h2>
-        <p>{{ article.description }}</p>
-        <p>{{ article.content|truncatewords:30 }}</p>
-        <p>Дата создания: {{ article.time_create|date:"d.m.Y" }}</p>
+        <h1>{{ article.title }}</h1>
+        <p>{{ article.content|truncatewords:50 }}</p>
+        <p>Дата создания: {{ article.time_create|date:"d-m-Y H:i:s" }}</p>
+        <p class="link-read-post"><a href="{{ article.get_absolute_url }}">Читать пост</a></p>
       </div>
     {% endfor %}
   </div>
-{% else %}
-  <p>В этой категории пока нет статей.</p>
 {% endif %}
+
+{% if article %}
+  <div class="article">
+    <h1>{{ article.title }}</h1>
+    <p>{{ article.content }}</p>
+    <p>Дата создания: {{ article.time_create|date:"d-m-Y H:i:s" }}</p>
+    <a href="{{ article.categories.get_absolute_url }}">← Назад в рубрику</a>
+  </div>
+{% endif %}
+
 {% endblock %}

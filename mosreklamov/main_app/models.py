@@ -35,3 +35,6 @@ class Article(models.Model):
 
     def __str__(self):
         return self.title
+
+    def get_absolute_url(self):
+        return reverse('article', kwargs={'art_slug': self.slug})

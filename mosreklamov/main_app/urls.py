@@ -7,5 +7,6 @@ urlpatterns = [
     path('nashi_ceny/', views.nashi_ceny, name='nashi-ceny'),
     path('o_companiy/', views.o_companiy, name='o-companiy'),
     path('contacts/', views.contacts, name='contacts'),
-    path('category/<slug:cat_slug>/', views.show_category, name='category')
+    path('category/<slug:cat_slug>/', views.show_category, name='category'),
+    path('article/<slug:art_slug>/', views.show_article, name='article'),
 ]
