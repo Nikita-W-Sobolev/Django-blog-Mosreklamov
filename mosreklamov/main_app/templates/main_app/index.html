@@ -1,4 +1,18 @@
 {% extends 'base.html' %}
 {% block content %}
 <h1>{{ title }}</h1>
+{% if articles %}
+  <div class="articles">
+    {% for article in articles %}
+      <div class="article">
+        <h2>{{ article.title }}</h2>
+        <p>{{ article.description }}</p>
+        <p>{{ article.content|truncatewords:30 }}</p>
+        <p>Дата создания: {{ article.time_create|date:"d.m.Y" }}</p>
+      </div>
+    {% endfor %}
+  </div>
+{% else %}
+  <p>В этой категории пока нет статей.</p>
+{% endif %}
 {% endblock %}

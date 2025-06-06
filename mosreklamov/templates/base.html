@@ -8,33 +8,69 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 <body>
+  <header>
     <div class="header-wrapper">
-      <div class="header">
-        <div class="header-image">
-          <img src="{% static 'main_app/images/logo.png' %}" alt="Логотип">
+      <a href="{% url 'home' %}">  <!-- Обернули лого в ссылку -->
+        <img src="{% static 'main_app/images/logo.png' %}" alt="Логотип">
+      </a>
+      <div class="header_mail_phone">
+        <div class="header_mail">
+          <i class="fa-solid fa-square-envelope" style="color: purple; font-size: 30px;"></i>
+          <strong>mosreklamov@mail.ru</strong>
         </div>
-
-        <div class="contact-info">
-            <div class="mail">
-            <i class="fa-solid fa-square-envelope" style="color: purple; font-size: 30px;"></i>
-            <span>mosreklamov@mail.ru</span>
-            </div>
-
-            <div class="phone">
-                <i class="fa-solid fa-phone-volume" style="color: purple; font-size: 30px;"></i>
-                <div class="phone-text">
-                  <div class="phone-number"><strong>+7 (985) 190-44-00</strong></div>
-                  <a href="/" class="callback-link"><i>обратный звонок</i></a>
-                </div>
-            </div>
+        <div class="header_phone">
+          <i class="fa-solid fa-phone-volume" style="color: purple; font-size: 30px;"></i>
+          <div class="header_phone-text">
+            <strong>+7 (985) 190-44-00</strong>
+            <a href="/" class="header_callback-link"><i>обратный звонок</i></a>
+          </div>
         </div>
       </div>
     </div>
 
-    {% block content %} {% endblock %}
+    <div class="wrap_main_menu">
+      <div class="main_menu">
+        {% for i in data %}
+        <a href="{% url i.url_name %}">{{i.title}}</a>
+        {% endfor %}
+      </div>
+      <div class="order">ОФОРМИТЬ ЗАКАЗ ОНЛАЙН</div>
+    </div>
 
-    <footer>
-        <p>© 2024 Мой сайт</p>
-    </footer>
+    <div class="top_menu"></div>
+  </header>
+
+  <aside class="side_menu">
+    <ul>
+      {% for category in categories %}
+        <li><a href="{% url 'category' category.slug %}">{{ category.name }}</a></li>
+      {% empty %}
+        <li>Категории не найдены</li>
+      {% endfor %}
+    </ul>
+  </aside>
+
+  <main>
+    {% block content %} {% endblock %}
+  </main>
+
+  <footer>
+    <div class="footer-wrapper">
+      <img src="{% static 'main_app/images/logo2.png' %}" alt="Логотип белый">
+      <div class="mail_phone">
+        <div class="mail">
+          <i class="fa-solid fa-square-envelope" style="color: white; font-size: 30px;"></i>
+          <strong>mosreklamov@mail.ru</strong>
+        </div>
+        <div class="phone">
+          <i class="fa-solid fa-phone-volume" style="color: white; font-size: 30px;"></i>
+          <div class="phone-text">
+            <strong>+7 (985) 190-44-00</strong>
+            <a href="/" class="callback-link"><i>обратный звонок</i></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
 </body>
 </html>

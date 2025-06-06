@@ -1,58 +1,348 @@
-.header-wrapper {
-    padding: 0 5vw; /* Внутренние отступы сверху и снизу 0, слева и справа 5% от ширины окна */
-    margin-top: 50px; /* Отступ сверху 50 пикселей */
+/* ===== БАЗОВЫЕ НАСТРОЙКИ ===== */
+/* Сброс стандартных отступов и модели box-sizing для всех элементов */
+* {
+    margin: 0; /* Убираем внешние отступы */
+    padding: 0; /* Убираем внутренние отступы */
+    box-sizing: border-box; /* Границы и padding включаются в ширину элемента */
 }
 
-.header {
-    display: flex; /* Использует Flexbox для расположения вложенных элементов по одной линии */
-    justify-content: space-between; /* Размещает вложенные элементы с максимальным расстоянием между ними */
-    align-items: center; /* Вертикальное выравнивание вложенных элементов по центру */
-    flex-wrap: wrap; /* Позволяет элементам переноситься на следующую строку при нехватке места */
+/* ===== СТРУКТУРА СТРАНИЦЫ ===== */
+html, body {
+    height: 100%; /* Фиксируем высоту для корректной работы flexbox */
 }
 
-.header-image img {
-    display: block; /* Изображение отображается как блочный элемент (убирает нежелательные пробелы под изображением) */
-    height: auto; /* Высота изображения масштабируется пропорционально */
+body {
+    font-family: 'Segoe UI', sans-serif;
+    display: flex; /* Включаем flex-контейнер */
+    flex-direction: column; /* Располагаем дочерние элементы в колонку */
+    min-height: 100vh; /* Минимальная высота = высота видимой области */
+    padding-top: 180px; /* Отступ = высота шапки + немного */
 }
 
-.contact-info {
-    display: flex; /* Располагает дочерние элементы в строку с помощью Flexbox */
-    gap: 50px; /* Отступ между элементами в 40 пикселей */
-    align-items: flex-start; /* Выравнивание элементов по верхнему краю */
+/* Основной контент (растягиваемый блок) */
+main {
+    flex: 1; /* flex-grow: 1 - элемент растягивается, заполняя доступное пространство */
+    /* Добавим защитный отступ, чтобы контент не прилипал к футеру */
+    padding-bottom: 20px;
 }
 
+/* ===== СТИЛИ ФУТЕРА ===== */
+footer {
+    width: 100%; /* На всю ширину */
+    height: 75px; /* Фиксированная высота */
+    background: linear-gradient(135deg, #9B59B6 0%, #8A2BE2 100%); /* Градиентный фон */
+    /* Можно добавить тень для визуального отделения */
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+    flex-shrink: 0
+}
+
+/* Контейнер внутри футера */
+.footer-wrapper {
+    display: flex; /* Flex-контейнер */
+    justify-content: space-between; /* Распределение пространства между элементами */
+    align-items: center; /* Вертикальное выравнивание по центру */
+    height: 100%; /* Занимает всю высоту футера */
+    padding: 0 5%; /* Горизонтальные отступы 5% */
+}
+
+/* Логотип в футере */
+.footer-wrapper img {
+    display: block; /* Блочное отображение */
+    height: auto; /* Сохраняет пропорции */
+    /* Ограничим максимальную высоту логотипа */
+    max-height: 50px;
+}
+
+/* Блоки с контактами */
 .mail, .phone {
-    display: flex; /* Вложенные элементы располагаются в строку с помощью Flexbox */
-    align-items: center; /* Вертикальное выравнивание элементов по центру */
-    gap: 10px; /* Отступ между элементами 8 пикселей */
+    display: flex; /* Flex-контейнер */
+    align-items: center; /* Выравнивание по центру */
+    gap: 10px; /* Расстояние между элементами */
+    font-size: 20px; /* Размер текста */
+    color: white; /* Цвет текста */
 }
 
-.mail span {
-    font-size: 20px; /* Размер шрифта 16 пикселей */
-    color: black; /* Цвет текста черный */
-}
-
+/* Текст телефона */
 .phone-text {
-    display: flex; /* Использует Flexbox */
-    flex-direction: column; /* Располагает вложенные элементы вертикально */
-    line-height: 1.2; /* Межстрочный интервал 1.2 для более компактного текста */
+    display: flex; /* Flex-контейнер */
+    flex-direction: column; /* Элементы в колонку */
+    line-height: 1.2; /* Межстрочный интервал */
 }
 
-.phone-number {
-    font-family: 'Segoe UI', sans-serif;
-    font-size: 20px; /* Размер шрифта 16 пикселей */
-    color: black; /* Цвет текста черный */
-}
-
+/* Ссылка "обратный звонок" */
 .callback-link {
-    font-family: 'Segoe UI', sans-serif;
-    font-size: 14px; /* Размер шрифта 14 пикселей */
-    color: purple; /* Цвет текста пурпурный */
-    text-decoration: none; /* Убирает подчеркивание по умолчанию */
-    margin-top: 2px; /* Отступ сверху 2 пикселя */
-    align-self: flex-end; /* Выравнивание по правому краю внутри flex-контейнера */
+    font-size: 14px; /* Размер текста */
+    text-decoration: none; /* Убираем подчеркивание */
+    margin-top: 2px; /* Небольшой отступ сверху */
+    align-self: flex-end; /* Выравнивание по правому краю */
+    color: white; /* Цвет текста */
+    /* Добавим эффект при наведении */
+    transition: opacity 0.3s;
 }
 
 .callback-link:hover {
-    text-decoration: underline; /* При наведении мыши появляется подчеркивание */
+    opacity: 0.8; /* Эффект при наведении */
+}
+
+/* Контейнер для контактов */
+.mail_phone {
+    display: flex; /* Flex-контейнер */
+    gap: 50px; /* Расстояние между блоками */
+    align-items: center; /* Выравнивание по центру */
+}
+
+/* ===== header ===== */
+/* ===== Общие стили для header ===== */
+header {
+  position: fixed; /* Фиксируем шапку */
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: white; /* Фон шапки */
+  z-index: 1000; /* Шапка поверх всего контента */
+  padding: 10px 0; /* Вертикальные отступы */
+  display: flex; /* Добавляем flex для header */
+  flex-direction: column; /* Меняем на колонку для вертикального расположения */
+}
+
+/* Контейнер внутри header */
+.header-wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%; /* Занимает всю ширину */
+  padding: 0 5%; /* Горизонтальные отступы 5% */
+}
+
+/* Логотип в header */
+.header-wrapper img {
+    display: block; /* Блочное отображение */
+    height: auto; /* Сохраняет пропорции */
+    /* Ограничим максимальную высоту логотипа */
+    max-height: 50px;
+}
+
+/* Блоки с контактами */
+.header_mail, .header_phone {
+    display: flex; /* Flex-контейнер */
+    align-items: center; /* Выравнивание по центру */
+    gap: 10px; /* Расстояние между элементами */
+    font-size: 20px; /* Размер текста */
+    color: black; /* Цвет текста */
+    font-family: 'Segoe UI', sans-serif; /* Шрифт */
+}
+
+/* Текст телефона */
+.header_phone-text {
+    display: flex; /* Flex-контейнер */
+    flex-direction: column; /* Элементы в колонку */
+    line-height: 1.2; /* Межстрочный интервал */
+}
+
+/* Ссылка "обратный звонок" */
+.header_callback-link {
+    font-size: 14px; /* Размер текста */
+    text-decoration: none; /* Убираем подчеркивание */
+    margin-top: 2px; /* Небольшой отступ сверху */
+    align-self: flex-end; /* Выравнивание по правому краю */
+    color: purple; /* Цвет текста */
+    /* Добавим эффект при наведении */
+    transition: opacity 0.3s;
+}
+
+.header_callback-link:hover {
+    opacity: 0.6; /* Эффект при наведении */
+}
+
+/* Контейнер для контактов */
+.header_mail_phone {
+    display: flex; /* Flex-контейнер */
+    gap: 50px; /* Расстояние между блоками */
+    align-items: center; /* Выравнивание по центру */
+}
+
+/* содержит стили для главного меню */
+.wrap_main_menu {
+  display: flex;
+  justify-content: space-between;
+  padding: 0 5%;
+  margin-top: 15px; /* Отступ сверху как требуется */
+  position: relative; /* Нужно для позиционирования относительно этого контейнера */
+  z-index: 3; /* Выше top_menu */
+}
+
+/* Главное меню */
+.main_menu {
+  width: 80%;
+  background: linear-gradient(135deg, #9B59B6 0%, #8A2BE2 100%); /* Градиентный фон */
+  height: 50px; /* Высота по умолчанию */
+  display: flex;
+  align-items: center;
+  padding: 0 15px;
+  border-radius: 5px;
+  justify-content: space-around; /* Равномерное распределение */
+  box-sizing: border-box;
+}
+
+/* Элементы меню */
+.main_menu a {
+  color: white;
+  text-decoration: none;
+  font-weight: 500;
+  flex-grow: 1; /* Растягиваем на доступное пространство */
+  text-align: center; /* Выравнивание по центру */
+  padding: 10px 5px; /* Вертикальные и минимальные горизонтальные отступы */
+  transition: all 0.3s ease; /* Плавные эффекты */
+  position: relative;
+}
+
+/* Эффекты при наведении */
+.main_menu a:hover {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 3px;
+}
+
+/* Разделители между элементами */
+.main_menu a:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  height: 60%;
+  width: 1px;
+  background: rgba(255, 255, 255, 0.3);
+}
+
+/* Правый блок */
+.order {
+    width: 19%;
+    font-weight: 500;
+    color: white;
+    background: linear-gradient(135deg, #9B59B6 0%, #8A2BE2 100%); /* Градиентный фон */
+    display: flex;
+    align-items: center;     /* Вертикальное выравнивание */
+    justify-content: center; /* Горизонтальное выравнивание */
+    text-align: center;      /* Дополнительное выравнивание */
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease; /* Плавные переходы */
+    transform-origin: center; /* Точка трансформации в центре */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Тень для объема */
+    position: relative;
+    overflow: hidden; /* Для анимации волны */
+}
+
+/* Эффекты при наведении */
+.order:hover {
+    transform: scale(1.03); /* Легкое увеличение */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); /* Усиленная тень */
+    filter: brightness(1.1); /* Увеличение яркости */
+}
+
+/* Эффект при нажатии */
+.order:active {
+    transform: scale(0.98); /* Эффект нажатия */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Уменьшение тени */
+}
+
+/* Верхнее меню */
+.top_menu {
+  height: 100px;
+  width: 100%;
+  background: #F0F0F0; /* Светло-серый фон */
+  position: relative;
+  margin-top: -25px; /* Сдвигаем вверх на половину высоты wrap_main_menu */
+  z-index: 2; /* Ниже wrap_main_menu */
+}
+
+/* ===== side_menu ===== */
+/* Фиксированное положение */
+.side_menu {
+    position: fixed;
+    top: 200px;
+    left: 5%;
+    width: 320px;
+    z-index: 100;
+}
+
+/* Базовые стили меню */
+.side_menu ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    border: 1px solid #f0ebfa;
+}
+
+.side_menu li {
+    position: relative;
+    transition: all 0.3s;
+}
+
+/* Разделители */
+.side_menu li:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 65px;
+    right: 20px;
+    height: 1px;
+    background: #f0ebfa;
+}
+
+/* Стили пунктов меню */
+.side_menu li a {
+    display: flex;
+    align-items: center;
+    padding: 18px 20px 18px 25px;
+    text-decoration: none;
+    color: #4b4b6a;
+    font-weight: 500;
+    font-size: 16px;
+    transition: all 0.3s;
+}
+
+/* Крупные иконки */
+.side_menu li a::before {
+    content: '';
+    display: inline-block;
+    width: 32px;
+    height: 32px;
+    min-width: 32px;
+    margin-right: 18px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+/* Примеры иконок - замените на свои PNG-файлы */
+.side_menu li:nth-child(1) a::before { background-image: url('../icons/bykvi.png'); }
+.side_menu li:nth-child(2) a::before { background-image: url('../icons/svet_kor.png'); }
+.side_menu li:nth-child(3) a::before { background-image: url('../icons/tablichki.png'); }
+.side_menu li:nth-child(4) a::before { background-image: url('../icons/transport.png'); }
+.side_menu li:nth-child(5) a::before { background-image: url('../icons/krishn_yst.png'); }
+.side_menu li:nth-child(6) a::before { background-image: url('../icons/panel_kronshtein.png'); }
+.side_menu li:nth-child(7) a::before { background-image: url('../icons/posm.png'); }
+.side_menu li:nth-child(8) a::before { background-image: url('../icons/frezer.png'); }
+.side_menu li:nth-child(9) a::before { background-image: url('../icons/lazer.png'); }
+
+/* Эффекты при наведении */
+.side_menu li a:hover {
+    color: #6d28d9;
+    background: rgba(139, 92, 246, 0.06);
+    padding-left: 28px;
+}
+
+/* Акцентная полоса слева при наведении */
+.side_menu li a:hover::before {
+    transform: scale(1.1);
+}
+
+main {
+    margin-left: 410px; /* Ширина меню + отступы */
+    padding: 30px;
+    margin-top: 0px; /* Отступ от шапки */
+    transition: all 0.3s ease;
 }
