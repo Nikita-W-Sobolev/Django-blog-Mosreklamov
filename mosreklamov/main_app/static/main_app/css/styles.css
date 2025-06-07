@@ -16,7 +16,7 @@ body {
     display: flex; /* Включаем flex-контейнер */
     flex-direction: column; /* Располагаем дочерние элементы в колонку */
     min-height: 100vh; /* Минимальная высота = высота видимой области */
-    padding-top: 180px; /* Отступ = высота шапки + немного */
+    padding-top: 185px; /* Отступ = высота шапки + немного */
 }
 
 /* Основной контент (растягиваемый блок) */
@@ -246,21 +246,60 @@ header {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Уменьшение тени */
 }
 
-/* Верхнее меню */
+/* ===== Верхнее меню с тегами ===== */
 .top_menu {
-  height: 100px;
   width: 100%;
   background: #F0F0F0; /* Светло-серый фон */
   position: relative;
-  margin-top: -25px; /* Сдвигаем вверх на половину высоты wrap_main_menu */
-  z-index: 2; /* Ниже wrap_main_menu */
+  margin-top: -25px;
+  z-index: 2;
+  display: flex;
+  flex-wrap: wrap; /* Перенос на новую строку */
+  align-items: center;
+  padding: 30px 7.4% 5px; /* Увеличил верхний отступ для перекрытия */
+  gap: 5px; /* Равномерные отступы между тегами */
+  box-shadow: 0 3px 6px rgba(0,0,0,0.05);
+}
+
+/* Стили для тегов - светлая версия */
+.tag-link {
+  display: inline-block;
+  padding: 8px 18px;
+  background: linear-gradient(135deg, #F5F5DC 0%, #E6E6FA 100%); /* Бежево-лавандовый градиент */
+  color: #333;
+  border-radius: 26px;
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  border: 1px solid #DCDCDC;
+}
+
+.tag-link:hover {
+  background: linear-gradient(135deg, #E6E6FA 0%, #D8BFD8 100%); /* Лавандовый градиент */
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  color: #000;
+}
+
+/* Активный тег */
+.tag-link.active {
+  background: white;
+  color: #8A2BE2; /* Фиолетовый текст */
+  font-weight: bold;
+  box-shadow:
+    0 0 0 2px #E6E6FA,
+    0 0 0 4px #9370DB,
+    0 4px 12px rgba(147, 112, 219, 0.3);
+  border: 1px solid #8A2BE2;
 }
 
 /* ===== side_menu ===== */
 /* Фиксированное положение */
 .side_menu {
     position: fixed;
-    top: 200px;
+    top: 215px;
     left: 5%;
     width: 320px;
     z-index: 100;
@@ -309,9 +348,9 @@ header {
 .side_menu li a::before {
     content: '';
     display: inline-block;
-    width: 32px;
-    height: 32px;
-    min-width: 32px;
+    width: 35px;
+    height: 35px;
+    min-width: 35px;
     margin-right: 18px;
     background-size: contain;
     background-repeat: no-repeat;
@@ -345,4 +384,153 @@ main {
     padding: 30px;
     margin-top: 0px; /* Отступ от шапки */
     transition: all 0.3s ease;
+}
+
+/* ===== Статьи ===== */
+.articles {
+    margin-right: 5%;
+}
+
+/* Стиль для кнопки "Читать пост" */
+a.link-read-post {
+  display: inline-block;
+  padding: 7px 24px 7px 24px;
+  background: white;
+  border-radius: 30px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  box-shadow:
+    0 2px 4px rgba(0, 0, 0, 0.05),
+    inset 0 0 0 1px #E6E6FA;
+  border: 1px solid #D8BFD8;
+  margin: 15px 0;
+  position: relative;
+  color: #9B59B6;
+  letter-spacing: 0.3px;
+}
+
+a.link-read-post:hover {
+  background: #F8F8FF;
+  transform: translateY(-2px);
+  box-shadow:
+    0 4px 8px rgba(147, 112, 219, 0.15),
+    inset 0 0 0 1px #D8BFD8;
+  color: #483D8B;
+}
+
+a.link-read-post:after {
+  content: "→";
+  margin-left: 8px;
+  transition: transform 0.3s ease;
+  display: inline-block;
+}
+
+a.link-read-post:hover:after {
+  transform: translateX(3px);
+}
+
+/* Стиль для кнопки "Назад в рубрику" */
+a.back-to-category {
+  display: inline-block;
+  padding: 7px 24px 7px 20px;
+  background: white;
+  border-radius: 30px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  box-shadow:
+    0 2px 4px rgba(0, 0, 0, 0.05),
+    inset 0 0 0 1px #E6E6FA;
+  border: 1px solid #D8BFD8;
+  margin: 15px 0;
+  color: #9B59B6;
+}
+
+a.back-to-category:hover {
+  background: #F8F8FF;
+  transform: translateX(-3px);
+  box-shadow:
+    0 4px 8px rgba(147, 112, 219, 0.15),
+    inset 0 0 0 1px #D8BFD8;
+  color: #483D8B;
+}
+
+a.back-to-category:before {
+  content: "←";
+  margin-right: 8px;
+  transition: transform 0.3s ease;
+}
+
+a.back-to-category:hover:before {
+  transform: translateX(-3px);
+}
+
+/* Контейнер для тегов */
+.article-tag {
+  margin-bottom: 20px;
+}
+
+/* Список тегов */
+.tag_list {
+  display: flex;        /* Гибкий контейнер */
+  flex-wrap: wrap;      /* Разрешаем перенос на новую строку */
+  list-style: none;     /* Убираем маркеры списка */
+  padding: 0;           /* Убираем стандартные отступы */
+  margin-top: 20px;            /* Убираем стандартные отступы */
+  gap: 8px;             /* Расстояние между тегами */
+  align-items: center;
+}
+
+/* Элементы списка */
+.tag_list li:first-child {
+  font-weight: bold;    /* "Теги:" выделяем жирным */
+  margin-right: 5px;
+}
+
+/* Ссылки-теги */
+.tag_list a {
+  display: inline-block;
+  background-color: #f0f0f0;
+  color: #333;
+  text-decoration: none;
+  padding: 4px 12px;
+  border-radius: 15px;
+  font-size: 0.9em;
+  transition: all 0.3s ease;
+  border: 1px solid #ddd;
+}
+
+/* Эффект при наведении на тег */
+.tag_list a:hover {
+  background-color: #e0e0e0;
+  transform: translateY(-2px);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* Контейнер статьи */
+.articles {
+  background-color: #fff;
+  padding: 25px;
+  border-radius: 8px;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+  line-height: 1.6;
+  margin-bottom: 30px;
+}
+
+/* Контент статьи */
+.articles p:first-of-type {
+  font-size: 1.1em;
+  margin-bottom: 25px;
+  color: #333;
+}
+
+/* Стили для даты */
+.articles p:last-of-type {
+  color: #666;
+  font-size: 0.85em;
+  font-style: italic;
+  margin-top: 20px;
+  padding-top: 10px;
+  border-top: 1px solid #eee;
 }

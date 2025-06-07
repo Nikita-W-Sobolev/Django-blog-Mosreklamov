@@ -2,8 +2,15 @@ from django.http import HttpResponse, HttpResponseNotFound, Http404
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from django.template.loader import render_to_string
-from .models import Category, Article
+from .models import Category, Article, TagPost
 
+main_menu = [{'title': 'ГЛАВНАЯ', 'url_name': 'home'},
+                 {'title': 'НАШИ РАБОТЫ', 'url_name': 'nashi-raboti'},
+                 {'title': 'НАШИ ЦЕНЫ', 'url_name': 'nashi-ceny'},
+                 {'title': 'О КОМПАНИИ', 'url_name': 'o-companiy'},
+                 {'title': 'КОНТАКТЫ', 'url_name': 'contacts'}]
+
+tags = TagPost.objects.all()
 
 def index(request):
     categories_list = Category.objects.all()
@@ -11,11 +18,8 @@ def index(request):
         'title': 'Изготовление наружной рекламы в Москве.',
         'categories': categories_list,
         'cat_selected': 0,  # Ничего не выбрано
-        'data': [{'title': 'ГЛАВНАЯ', 'url_name': 'home'},
-                 {'title': 'НАШИ РАБОТЫ', 'url_name': 'nashi-raboti'},
-                 {'title': 'НАШИ ЦЕНЫ', 'url_name': 'nashi-ceny'},
-                 {'title': 'О КОМПАНИИ', 'url_name': 'o-companiy'},
-                 {'title': 'КОНТАКТЫ', 'url_name': 'contacts'}],
+        'data': main_menu,
+        'tags': tags,
     }
     return render(request, "main_app/index.html", context=data)
 
@@ -28,11 +32,8 @@ def show_category(request, cat_slug):
         'articles': articles,
         'cat_selected': category.pk,
         'categories': categories_list,
-        'data': [{'title': 'ГЛАВНАЯ', 'url_name': 'home'},
-                 {'title': 'НАШИ РАБОТЫ', 'url_name': 'nashi-raboti'},
-                 {'title': 'НАШИ ЦЕНЫ', 'url_name': 'nashi-ceny'},
-                 {'title': 'О КОМПАНИИ', 'url_name': 'o-companiy'},
-                 {'title': 'КОНТАКТЫ', 'url_name': 'contacts'}],
+        'data': main_menu,
+        'tags': tags,
     }
     return render(request, "main_app/index.html", context=data)
 
@@ -46,13 +47,25 @@ def show_article(request, art_slug):
         'article': article,
         'category': category,
         'categories': categories_list,
-        'data': [{'title': 'ГЛАВНАЯ', 'url_name': 'home'},
-                 {'title': 'НАШИ РАБОТЫ', 'url_name': 'nashi-raboti'},
-                 {'title': 'НАШИ ЦЕНЫ', 'url_name': 'nashi-ceny'},
-                 {'title': 'О КОМПАНИИ', 'url_name': 'o-companiy'},
-                 {'title': 'КОНТАКТЫ', 'url_name': 'contacts'}],
+        'data': main_menu,
+        'tags': tags,
     }
     return render(request, "main_app/index.html", context=data)
+
+def show_tag_postlist(request, tag_slug):
+    my_tag = get_object_or_404(TagPost, slug=tag_slug)
+    categories_list = Category.objects.all()
+    posts = my_tag.tags.filter(is_published=True)
+    data = {
+        'title': f"Тег: {my_tag.name}",
+        'data': main_menu,
+        'categories': categories_list,
+        'cat_selected': None,
+        'posts': posts,
+        'tags': tags,
+    }
+    return render(request, "main_app/index.html", context=data)
+
 
 def nashi_raboti(request):
     return HttpResponse('<h1>Наши работы</h1>')

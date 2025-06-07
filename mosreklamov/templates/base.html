@@ -37,7 +37,11 @@
       <div class="order">ОФОРМИТЬ ЗАКАЗ ОНЛАЙН</div>
     </div>
 
-    <div class="top_menu"></div>
+    <div class="top_menu">
+      {% for i in tags %}
+      <a href="{{i.get_absolute_url}}" class="tag-link">{{i.name}}</a>
+      {% endfor %}
+    </div>
   </header>
 
   <aside class="side_menu">

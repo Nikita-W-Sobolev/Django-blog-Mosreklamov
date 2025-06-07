@@ -10,18 +10,40 @@
         <h1>{{ article.title }}</h1>
         <p>{{ article.content|truncatewords:50 }}</p>
         <p>Дата создания: {{ article.time_create|date:"d-m-Y H:i:s" }}</p>
-        <p class="link-read-post"><a href="{{ article.get_absolute_url }}">Читать пост</a></p>
+        <a class="link-read-post" href="{{ article.get_absolute_url }}">Читать пост</a>
       </div>
     {% endfor %}
   </div>
 {% endif %}
 
 {% if article %}
-  <div class="article">
-    <h1>{{ article.title }}</h1>
+  <div class="article-tag">
+    {% with article.tags.all as art_tags %}
+      {% if art_tags %}
+        <ul class="tag_list">
+          <li>Теги:</li>
+          {% for i in art_tags %}
+          <li><a href="{{i.get_absolute_url}}">{{i.name}}</a></li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
+  </div>
+  <div class="articles">
     <p>{{ article.content }}</p>
     <p>Дата создания: {{ article.time_create|date:"d-m-Y H:i:s" }}</p>
-    <a href="{{ article.categories.get_absolute_url }}">← Назад в рубрику</a>
+    <a class="back-to-category" href="{{ article.categories.get_absolute_url }}">Назад в рубрику</a>
+  </div>
+{% endif %}
+
+{% if posts %}
+  <div class="articles">
+    {% for i in posts %}
+      <h1>{{ i.title }}</h1>
+      <p>{{ i.content|truncatewords:50 }}</p>
+      <p>Дата создания: {{ i.time_create|date:"d-m-Y H:i:s" }}</p>
+      <a class="link-read-post" href="{{ i.get_absolute_url }}">Читать пост</a>
+    {% endfor %}
   </div>
 {% endif %}
 
