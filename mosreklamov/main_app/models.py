@@ -28,6 +28,7 @@ class Article(models.Model):
     slug = models.SlugField(max_length=100, unique=True, db_index=True)
     categories = models.ForeignKey('Category', on_delete=models.PROTECT, related_name='articles')
     tags = models.ManyToManyField('TagPost', blank=True, related_name='tags')
+    photo = models.ImageField(upload_to="articles_image", default=None, blank=True, null=True, verbose_name='Изображение статьи')
 
     class Meta:
         verbose_name = "Статья"

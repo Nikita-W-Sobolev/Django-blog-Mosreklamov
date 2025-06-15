@@ -6,6 +6,7 @@
     <title>{{ title }}</title>
     <link type="text/css" href="{% static 'main_app/css/styles.css' %}" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script src="{% static 'main_app/js/slider.js' %}"></script>
 </head>
 <body>
   <header>
@@ -55,7 +56,8 @@
   </aside>
 
   <main>
-    {% block content %} {% endblock %}
+    {% block content %}{% endblock %}
+    {% block home_content %}{% endblock %}
   </main>
 
   <footer>

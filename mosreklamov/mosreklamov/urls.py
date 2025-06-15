@@ -15,16 +15,22 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from debug_toolbar.toolbar import debug_toolbar_urls
+from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
 from main_app import views
 from main_app.views import page_not_found
+from mosreklamov import settings
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('main_app.urls')),
 ] + debug_toolbar_urls()
 
+# Это строчки для связывания маршрута с рабочим каталогом для отладочного сервера
+# Иначе изображение не будет выводиться
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 handler404 = page_not_found
 

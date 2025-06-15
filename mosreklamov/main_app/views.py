@@ -2,11 +2,13 @@ from django.http import HttpResponse, HttpResponseNotFound, Http404
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from django.template.loader import render_to_string
+
+from .forms import AddPostForm
 from .models import Category, Article, TagPost
 
 main_menu = [{'title': 'ГЛАВНАЯ', 'url_name': 'home'},
                  {'title': 'НАШИ РАБОТЫ', 'url_name': 'nashi-raboti'},
-                 {'title': 'НАШИ ЦЕНЫ', 'url_name': 'nashi-ceny'},
+                 {'title': 'ДОБАВИТЬ СТАТЬЮ', 'url_name': 'dobavit_staty'},
                  {'title': 'О КОМПАНИИ', 'url_name': 'o-companiy'},
                  {'title': 'КОНТАКТЫ', 'url_name': 'contacts'}]
 
@@ -15,13 +17,14 @@ tags = TagPost.objects.all()
 def index(request):
     categories_list = Category.objects.all()
     data = {
-        'title': 'Изготовление наружной рекламы в Москве.',
         'categories': categories_list,
         'cat_selected': 0,  # Ничего не выбрано
         'data': main_menu,
         'tags': tags,
+        'show_home_text': True,
     }
     return render(request, "main_app/index.html", context=data)
+
 
 def show_category(request, cat_slug):
     categories_list = Category.objects.all()
@@ -70,8 +73,27 @@ def show_tag_postlist(request, tag_slug):
 def nashi_raboti(request):
     return HttpResponse('<h1>Наши работы</h1>')
 
-def nashi_ceny(request):
-    return HttpResponse('<h1>Наши цены</h1>')
+# функция для работы с добавлением новой статьи
+def dobavit_staty(request):
+    categories_list = Category.objects.all()
+    if request.method == 'POST':
+        form = AddPostForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return redirect('home')
+    else:
+        form = AddPostForm()
+    data = {
+        'title': 'Добавление новой статьи.',
+        'data': main_menu,
+        'categories': categories_list,
+        'cat_selected': None,
+        'add_article': True,
+        'tags': tags,
+        'form': form,
+    }
+    return render(request, "main_app/index.html", context=data)
+
 
 def o_companiy(request):
     return HttpResponse('<h1>О компании</h1>')

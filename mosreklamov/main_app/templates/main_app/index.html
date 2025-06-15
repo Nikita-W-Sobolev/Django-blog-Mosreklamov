@@ -1,6 +1,8 @@
 {% extends 'base.html' %}
-{% block content %}
+{% load static %}
 
+<!--Блок отвечает за контент на страницах: статьи и статья. Добавляет теги.-->
+{% block content %}
 <h1>{{ title }}</h1>
 
 {% if articles %}
@@ -47,4 +49,27 @@
   </div>
 {% endif %}
 
+<!--Блок отвечает за добавление статьи-->
+{% if add_article %}
+  <div class="add_page">
+    <form action="" method="POST" enctype="multipart/form-data">
+      {% csrf_token %}
+      <div class="form-error">{{ form.non_field_errors }}</div>
+      {% for i in form %}
+      <label class="form-label" for="{{ i.id_for_label }}">{{i.label}}: </label>{{ i }}<p>
+      <div class="form-error">{{ i.errors }}</div>
+      {% endfor %}
+      <p><button type="submit">Отправить</button>
+    </form>
+  </div>
+{% endif%}
+
+
+{% endblock %}
+
+<!--Блок отвечает только за текст и слайдер на главной странице-->
+{% block home_content %}
+  {% if show_home_text %}
+    {% include 'main_app/includes/home.html' %}
+  {% endif %}
 {% endblock %}
