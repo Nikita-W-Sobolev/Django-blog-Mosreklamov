@@ -391,10 +391,46 @@ main {
     margin-right: 5%;
 }
 
+/* Стили для каждой отдельной статьи */
+.articles .article {
+  background-color: #fff;
+  padding: 25px;
+  border-radius: 8px;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+  line-height: 1.6;
+  margin-bottom: 30px;
+  border: 1px solid #f0f0f5;
+  position: relative; /* Для позиционирования */
+  overflow: hidden; /* Чтобы учитывать float */
+}
+
+/* Четкое разделение между статьями */
+.articles .article:not(:last-child) {
+  margin-bottom: 40px;
+  border-bottom: 1px solid #E6E6FA;
+  padding-bottom: 30px;
+}
+
+/* Дополнительный эффект при наведении на статью */
+.articles .article:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 5px 15px rgba(147, 112, 219, 0.12);
+  transition: all 0.3s ease;
+}
+
+/* Стиль для обтекания текста справа от картинки */
+.img-article-left {
+  float: left;
+  margin: 0 15px 10px 0; /* отступы справа и снизу */
+  width: 200px; /* или другая нужная ширина */
+  height: auto;
+  border-radius: 8px; /* опционально, для красоты */
+}
+
 /* Стиль для кнопки "Читать пост" */
 a.link-read-post {
   display: inline-block;
-  padding: 7px 24px 7px 24px;
+  padding: 7px 24px;
   background: white;
   border-radius: 30px;
   font-weight: 600;
@@ -404,7 +440,7 @@ a.link-read-post {
     0 2px 4px rgba(0, 0, 0, 0.05),
     inset 0 0 0 1px #E6E6FA;
   border: 1px solid #D8BFD8;
-  margin: 15px 0;
+  margin: -10px 15px 15px;
   position: relative;
   color: #9B59B6;
   letter-spacing: 0.3px;
@@ -508,16 +544,6 @@ a.back-to-category:hover:before {
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
-/* Контейнер статьи */
-.articles {
-  background-color: #fff;
-  padding: 25px;
-  border-radius: 8px;
-  box-shadow: 0 3px 10px rgba(0,0,0,0.08);
-  line-height: 1.6;
-  margin-bottom: 30px;
-}
-
 /* Контент статьи */
 .articles p:first-of-type {
   font-size: 1.1em;
@@ -533,6 +559,9 @@ a.back-to-category:hover:before {
   margin-top: 20px;
   padding-top: 10px;
   border-top: 1px solid #eee;
+  text-align: right; /* Выравнивание по правому краю */
+  display: flex; /* Для лучшего контроля */
+  justify-content: flex-end; /* Выталкиваем содержимое вправо */
 }
 
 /* ============Стили для текста на главной странице============*/
@@ -570,4 +599,271 @@ a.back-to-category:hover:before {
 .slider img {
     width: 100%;
     flex-shrink: 0;
+}
+
+/* ============Стили для формы добавления статьи============*/
+/* Общие стили формы */
+.add_page {
+    max-width: 600px;
+    margin: 30px auto;
+    padding: 20px;
+    background: #f9f9f9;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    font-family: 'Segoe UI', sans-serif;
+}
+/* Стили для формы */
+.add_page form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+/* Стили для меток (labels) */
+.form-label {
+    font-weight: 600;
+    color: #444;
+    margin-bottom: 5px;
+    display: block;
+}
+/* Стили для полей ввода */
+.add_page input[type="text"],
+.add_page input[type="file"],
+.add_page textarea,
+.add_page select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px;
+    transition: border-color 0.3s;
+}
+.add_page input[type="text"]:focus,
+.add_page input[type="file"]:focus,
+.add_page textarea:focus,
+.add_page select:focus {
+    border-color: #4a90e2;
+    outline: none;
+    box-shadow: 0 0 5px rgba(74, 144, 226, 0.3);
+}
+.add_page textarea {
+    min-height: 150px;
+    resize: vertical;
+}
+/* Стили для кнопки */
+.add_page button[type="submit"] {
+    background: #9B59B6;
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+.add_page button[type="submit"]:hover {
+    background: purple;
+}
+/* Стили для ошибок */
+.form-error {
+    color: #e74c3c;
+    font-size: 14px;
+    margin-top: 5px;
+}
+/* Стили для выбора категорий и тегов */
+.add_page select[multiple] {
+    height: auto;
+    min-height: 100px;
+}
+/* Стили для чекбоксов (если будут) */
+.add_page input[type="checkbox"] {
+    margin-right: 10px;
+}
+/* Адаптивность */
+@media (max-width: 768px) {
+    .add_page {
+        padding: 15px;
+        margin: 20px 10px;
+    }
+}
+/*Красивый выбор файла*/
+.add_page input[type="file"] {
+    padding: 8px;
+    background: #fff;
+}
+.title-body {
+    font-family: 'Georgia', 'Times New Roman', serif; /* Элегантный шрифт */
+    color: #6a0dad; /* Красивый фиолетовый */
+    text-align: center; /* Выравнивание по центру */
+    margin-top: 40px; /* Отступ сверху */
+    margin-bottom: 30px; /* Отступ снизу */
+    font-size: 2.5rem; /* Крупный размер */
+    font-weight: 700; /* Полужирное начертание */
+    letter-spacing: 0.5px; /* Легкий разряд */
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1); /* Легкая тень для объема */
+    line-height: 1.2; /* Межстрочный интервал */
+    padding-bottom: 10px; /* Отступ снизу для подчеркивания */
+    position: relative; /* Для псевдоэлемента */
+}
+
+/*===============Стили пагинации=============== */
+/* Общие стили для обеих пагинаций */
+.pagination {
+  margin: 20px 0;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.pagination-link {
+  display: inline-block;
+  padding: 8px 16px;
+  background: white;
+  border-radius: 20px;
+  text-decoration: none;
+  color: #9B59B6;
+  border: 1px solid #D8BFD8;
+  transition: all 0.3s ease;
+  font-size: 14px;
+}
+
+.pagination-link:hover {
+  background: #F8F8FF;
+  color: #483D8B;
+  transform: translateY(-2px);
+  box-shadow: 0 2px 5px rgba(147, 112, 219, 0.1);
+}
+
+.current-page {
+  padding: 8px 16px;
+  font-weight: bold;
+  color: #483D8B;
+  font-size: 14px;
+}
+
+/* Специфичные отступы */
+.top-pagination {
+  margin-bottom: 30px;
+}
+.bottom-pagination {
+  margin-top: 30px;
+}
+/*==============Кнопка изменить статью====================*/
+.edit-btn {
+  display: inline-block;
+  padding: 7px 15px;
+  background: #f8f9fa;
+  border-radius: 20px;
+  color: #6c757d;
+  text-decoration: none;
+  border: 1px solid #dee2e6;
+  transition: all 0.3s;
+}
+
+.edit-btn:hover {
+  background: #e9ecef;
+  color: #495057;
+  border-color: #adb5bd;
+}
+
+/* ============== Футер статьи ============== */
+.article-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 15px;
+  padding-top: 15px;
+  border-top: 1px solid #eee;
+}
+
+/* ============== Блок кнопок справа ============== */
+.article-actions {
+  display: flex;
+  gap: 10px;
+}
+
+/* ============== Кнопка удаления ============== */
+.delete-btn {
+  padding: 7px 15px;
+  background: #fff5f5;
+  border-radius: 20px;
+  color: #dc3545;
+  border: 1px solid #f1aeb5;
+  cursor: pointer;
+  transition: all 0.3s;
+  font-size: 14px;
+}
+
+.delete-btn:hover {
+  background: #dc3545;
+  color: white;
+}
+
+/* ============== Модальное окно ============== */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.5);
+}
+
+.modal-content {
+  background-color: #fff;
+  margin: 15% auto;
+  padding: 20px;
+  border-radius: 8px;
+  width: 90%;
+  max-width: 500px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.modal h3 {
+  margin-top: 0;
+  color: #dc3545;
+}
+
+.modal-form {
+  margin-top: 20px;
+}
+
+.modal-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.close:hover {
+  color: #333;
+}
+
+.confirm-delete-btn {
+  padding: 8px 16px;
+  background: #dc3545;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.cancel-btn {
+  padding: 8px 16px;
+  background: #6c757d;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
 }

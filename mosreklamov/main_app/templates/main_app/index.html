@@ -3,21 +3,36 @@
 
 <!--Блок отвечает за контент на страницах: статьи и статья. Добавляет теги.-->
 {% block content %}
-<h1>{{ title }}</h1>
+<div class="title-body">{{ title }}</div>
 
+
+<!--Отвечает за вывод статей по категориям-->
 {% if articles %}
-  <div class="articles">
-    {% for article in articles %}
-      <div class="article">
-        <h1>{{ article.title }}</h1>
-        <p>{{ article.content|truncatewords:50 }}</p>
-        <p>Дата создания: {{ article.time_create|date:"d-m-Y H:i:s" }}</p>
-        <a class="link-read-post" href="{{ article.get_absolute_url }}">Читать пост</a>
-      </div>
-    {% endfor %}
-  </div>
+  {% if page_obj %}  <!--Работаем с пагинацией (page_obj) а не с articles-->
+    {% include "main_app/includes/pagination.html" with extra_class="top-pagination" %}  <!--Верхний пагинатор-->
+    <div class="articles">
+      {% for article in page_obj %}  <!--Работаем с пагинацией (page_obj)-->
+        <div class="article">
+          {% if article.photo %}
+            <img class="img-article-left thumb" src="{{article.photo.url}}">
+          {% endif %}
+          <h1>{{ article.title }}</h1>
+          <p>{{ article.content|truncatewords:50 }}</p>
+          <p>Дата создания: {{ article.time_create|date:"d-m-Y H:i:s" }}</p>
+          <a class="link-read-post" href="{{ article.get_absolute_url }}">Читать статью</a>
+        </div>
+      {% endfor %}
+    </div>
+    {% include "main_app/includes/pagination.html" with extra_class="bottom-pagination" %}  <!--Нижний пагинатор-->
+  {% else %}  <!--Если статей нет-->
+    <div class="no-articles">
+      <p>В этой рубрике пока нет статей</p>  <!--Сообщение об отсутствии статей-->
+    </div>
+  {% endif %}
 {% endif %}
 
+
+<!--Отвечает за отображение одной статьи-->
 {% if article %}
   <div class="article-tag">
     {% with article.tags.all as art_tags %}
@@ -32,31 +47,71 @@
     {% endwith %}
   </div>
   <div class="articles">
+    {% if article.photo %}
+      <img class="img-article-left thumb" src="{{article.photo.url}}">
+    {% endif %}
     <p>{{ article.content }}</p>
     <p>Дата создания: {{ article.time_create|date:"d-m-Y H:i:s" }}</p>
-    <a class="back-to-category" href="{{ article.categories.get_absolute_url }}">Назад в рубрику</a>
+    <div class="article-footer">
+      <a class="back-to-category" href="{{ article.categories.get_absolute_url }}">Назад в рубрику</a>
+      <div class="article-actions">
+        <a class="edit-btn" href="{% url 'edit_article' article.id %}">✎ Изменить</a>
+        <button class="delete-btn" onclick="showDeleteModal({{ article.id }})">🗑 Удалить</button>
+      </div>
+    </div>
+  </div>
+  <!-- Модальное окно подтверждения удаления-->
+  <div id="deleteModal-{{ article.id }}" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal({{ article.id }})">&times;</span>
+      <h3>Подтвердите удаление</h3>
+      <p>Вы точно хотите удалить статью "{{article.title}}"?</p>
+      <form action="{% url 'delete_article' article.id %}" method="post" class="modal-form">
+        {% csrf_token %}
+        <div class="modal-buttons">
+          <button type="button" class="cancel-btn" onclick="closeModal({{ article.id }})">Отмена</button>
+          <button type="submit" class="confirm-delete-btn">Удалить</button>
+        </div>
+      </form>
+    </div>
   </div>
 {% endif %}
 
+
+<!--Отвечает за вывод статей по тегам-->
 {% if posts %}
-  <div class="articles">
-    {% for i in posts %}
-      <h1>{{ i.title }}</h1>
-      <p>{{ i.content|truncatewords:50 }}</p>
-      <p>Дата создания: {{ i.time_create|date:"d-m-Y H:i:s" }}</p>
-      <a class="link-read-post" href="{{ i.get_absolute_url }}">Читать пост</a>
-    {% endfor %}
-  </div>
+  {% if page_obj %}  <!--Работаем с пагинацией (page_obj) а не с articles-->
+    {% include "main_app/includes/pagination.html" with extra_class="top-pagination" %}  <!--Верхний пагинатор-->
+    <div class="articles">
+      {% for post in page_obj %}
+        <div class="article">
+          {% if post.photo %}
+            <img class="img-article-left thumb" src="{{post.photo.url}}">
+          {% endif %}
+          <h1>{{ post.title }}</h1>
+          <p>{{ post.content|truncatewords:50 }}</p>
+          <p>Дата создания: {{ post.time_create|date:"d-m-Y H:i:s" }}</p>
+          <a class="link-read-post" href="{{ post.get_absolute_url }}">Читать статью</a>
+        </div>
+      {% endfor %}
+    </div>
+    {% include "main_app/includes/pagination.html" with extra_class="bottom-pagination" %}  <!--Нижний пагинатор-->
+  {% else %}  <!--Если статей нет-->
+    <div class="no-articles">
+      <p>В этой рубрике пока нет статей</p>  <!--Сообщение об отсутствии статей-->
+    </div>
+  {% endif %}
 {% endif %}
 
-<!--Блок отвечает за добавление статьи-->
-{% if add_article %}
+
+<!--Блок отвечает за добавление и изменение статьи-->
+{% if add_edit_article %}
   <div class="add_page">
     <form action="" method="POST" enctype="multipart/form-data">
       {% csrf_token %}
       <div class="form-error">{{ form.non_field_errors }}</div>
       {% for i in form %}
-      <label class="form-label" for="{{ i.id_for_label }}">{{i.label}}: </label>{{ i }}<p>
+      <label class="form-label" for="{{ i.id_for_label }}">{{i.label}}: </label>{{ i }}
       <div class="form-error">{{ i.errors }}</div>
       {% endfor %}
       <p><button type="submit">Отправить</button>
@@ -64,8 +119,8 @@
   </div>
 {% endif%}
 
-
 {% endblock %}
+
 
 <!--Блок отвечает только за текст и слайдер на главной странице-->
 {% block home_content %}

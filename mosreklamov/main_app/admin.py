@@ -9,7 +9,8 @@ class ArticleAdmin(admin.ModelAdmin):
     ordering = ['id']  # указываем сортировку статей (только для админ панели)
     list_editable = ('is_published', )  # Позволяет менять значение не открывая статью. Появится раскрывающееся меню
     list_per_page = 10  # сколько статей отображается на главной странице
-    prepopulated_fields = {'slug': ('title',)}  # в админке поле слаг будет заполняться автоматически (не сочетается с readonly_fields)
+    # prepopulated_fields = {'slug': ('title',)}  # в админке поле слаг будет заполняться автоматически (не сочетается с readonly_fields)
+    readonly_fields = ('slug',)  # показываем slug, но не даем редактировать
     filter_horizontal = ['tags']  # Преобразует виджет в развёрнутую форму. Можно filter_vertical.
     search_fields = ['title__startswith', 'categories__name']  # добавляет поиск по первым буквам заголовка(добавили lookups) и имени категории
     list_filter = ['categories__name', 'is_published']  # добавляет фильтрацию по категории и статусу

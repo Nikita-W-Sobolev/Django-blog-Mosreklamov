@@ -1,0 +1,22 @@
+  <!--Работа пагинации:
+page_obj.has_previous - проверка наличия предыдущих страниц
+page_obj.previous_page_number - номер предыдущей страницы
+page_obj.number - номер текущей страницы
+page_obj.paginator.num_pages - общее количество страниц
+page_obj.has_next - проверка наличия следующих страниц
+page_obj.next_page_number - номер следующей страницы-->
+<div class="pagination {{ extra_class }}">
+  {% if page_obj.has_previous %} <!--Если есть предыдущие статьи-->
+    <a href="?page=1" class="pagination-link">&laquo; Первая</a>  <!-- Ссылка на ПЕРВУЮ страницу -->
+    <a href="?page={{ page_obj.previous_page_number }}" class="pagination-link">Назад</a>  <!-- Ссылка на ПРЕДЫДУЩУЮ страницу -->
+  {% endif %}
+
+  <span class="current-page">
+    Страница {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}  <!-- Текущая страница и всего страниц -->
+  </span>
+
+  {% if page_obj.has_next %} <!--Если есть следующая статья-->
+    <a href="?page={{ page_obj.next_page_number }}" class="pagination-link">Вперед</a>  <!--Ссылка на СЛЕДУЮЩУЮ страницу-->
+    <a href="?page={{ page_obj.paginator.num_pages }}" class="pagination-link">Последняя &raquo;</a>  <!--Ссылка на ПОСЛЕДНЮЮ страницу-->
+  {% endif %}
+</div>
