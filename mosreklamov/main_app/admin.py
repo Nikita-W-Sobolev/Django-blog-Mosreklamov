@@ -1,6 +1,8 @@
 from django.contrib import admin
-from main_app.models import Article, Category
+from django.contrib.auth.admin import UserAdmin
+from django.contrib.auth.models import Group
 
+from main_app.models import Article, Category, User
 
 @admin.register(Article)
 class ArticleAdmin(admin.ModelAdmin):
@@ -19,3 +21,9 @@ class ArticleAdmin(admin.ModelAdmin):
 class CategoryAdmin(admin.ModelAdmin):
     list_display = ('id', 'name')  # поля, отображаемые в админ панели
     list_display_links = ('name',)  # делает данное поле кликабельным для перехода в статью
+
+# Регистрируем User
+# admin.site.register(User, UserAdmin)
+@admin.register(User)
+class CustomUserAdmin(admin.ModelAdmin):
+    list_display = ('username', 'password', 'first_name', 'last_name', 'photo', 'email', 'date_joined')

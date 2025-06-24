@@ -123,7 +123,7 @@ header {
 }
 
 /* Блоки с контактами */
-.header_mail, .header_phone {
+.header_mail, .header_phone , .input-button {
     display: flex; /* Flex-контейнер */
     align-items: center; /* Выравнивание по центру */
     gap: 10px; /* Расстояние между элементами */
@@ -139,8 +139,56 @@ header {
     line-height: 1.2; /* Межстрочный интервал */
 }
 
+.input-registration {
+    font-size: 14px;
+    text-decoration: none;
+    color: black; /* Чёрный шрифт */
+    transition: all 0.3s ease;
+    margin: 0 5px;
+    padding: 4px 8px;
+}
+
+/* Стиль для имени пользователя (фиолетовый) */
+.input-registration.username-link {
+    color: black;
+    font-weight: 500;
+}
+
+.input-registration.username-link strong {
+    font-weight: 600;
+}
+
+/* Стиль для кнопки выхода */
+.input-registration.logout-link {
+    color: #8a63d2 !important;
+    background: rgba(138, 99, 210, 0.1);
+    padding: 4px 10px;
+    border-radius: 4px;
+}
+
+.input-registration.logout-link:hover {
+    background: rgba(138, 99, 210, 0.2);
+}
+
+/* Стиль для кнопки входа/регистрации (БЕЗ РАМКИ) */
+.input-registration.login-link {
+    color: black !important; /* Чёрный шрифт */
+    font-weight: 500;
+    padding: 4px 8px;
+    /* Убрал border полностью */
+}
+
+.input-registration.login-link:hover {
+    opacity: 0.8;
+}
+
+/* Общие эффекты при наведении */
+.input-registration:hover {
+    transform: translateY(-1px);
+}
+
 /* Ссылка "обратный звонок" */
-.header_callback-link {
+.header_callback-link{
     font-size: 14px; /* Размер текста */
     text-decoration: none; /* Убираем подчеркивание */
     margin-top: 2px; /* Небольшой отступ сверху */
@@ -150,8 +198,8 @@ header {
     transition: opacity 0.3s;
 }
 
-.header_callback-link:hover {
-    opacity: 0.6; /* Эффект при наведении */
+.header_callback-link:hover, .input-registration:hover {
+    opacity: 0.7; /* Эффект при наведении */
 }
 
 /* Контейнер для контактов */
@@ -866,4 +914,416 @@ a.back-to-category:hover:before {
   border: none;
   border-radius: 4px;
   cursor: pointer;
+}
+
+/*===============Стили для форы регистрации=================*/
+.login-container {
+    max-width: 400px;
+    margin: 5vh auto;
+    padding: 40px;
+    border-radius: 12px;
+    background: #ffffff;
+    box-shadow: 0 8px 32px rgba(106, 33, 168, 0.12);
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    border: 1px solid #f0e6ff;
+    transform: translateY(0);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.1);
+}
+
+.login-container:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 40px rgba(106, 33, 168, 0.16);
+}
+
+.login-form label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: #4a2a82;
+    font-size: 14px;
+    letter-spacing: 0.3px;
+}
+
+.login-form input[type="text"],
+.login-form input[type="email"],
+.login-form input[type="password"] {
+    width: 100%;
+    padding: 14px 16px;
+    margin-bottom: 20px;
+    border: 1px solid #e3d9ff;
+    border-radius: 8px;
+    background: #fbf9ff;
+    font-size: 15px;
+    color: #4a2a82;
+    transition: all 0.3s ease;
+}
+
+.login-form input:focus {
+    border-color: #7e4bdb;
+    box-shadow: 0 0 0 3px rgba(126, 75, 219, 0.15);
+    outline: none;
+    background: #ffffff;
+}
+
+.remember-me {
+    display: flex;
+    align-items: center;
+    margin-bottom: 25px;
+    font-size: 14px;
+    color: #6b5a8a;
+}
+
+.remember-me input[type="checkbox"] {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 18px;
+    height: 18px;
+    border: 1px solid #d4c4ff;
+    border-radius: 4px;
+    margin-right: 10px;
+    position: relative;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.remember-me input[type="checkbox"]:checked {
+    background-color: #6a21a8;
+    border-color: #6a21a8;
+}
+
+.remember-me input[type="checkbox"]:checked::after {
+    content: "✓";
+    position: absolute;
+    color: white;
+    font-size: 12px;
+    left: 3px;
+    top: -1px;
+}
+
+.remember-me label {
+    margin: 0;
+    line-height: 1.4;
+    cursor: pointer;
+    user-select: none;
+}
+
+.btn {
+    display: block;
+    width: 100%;
+    padding: 14px;
+    margin-bottom: 15px;
+    font-weight: 600;
+    border-radius: 8px;
+    text-align: center;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    font-size: 15px;
+    letter-spacing: 0.5px;
+}
+
+.login-btn {
+    background: #6a21a8;
+    color: white;
+    box-shadow: 0 4px 12px rgba(106, 33, 168, 0.25);
+}
+
+.login-btn:hover {
+    background: #5a1a8f;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(106, 33, 168, 0.35);
+}
+
+.login-btn:active {
+    transform: translateY(0);
+}
+
+.register-btn {
+    background: white;
+    border: 1px solid #e3d9ff;
+    color: #6a21a8;
+    font-weight: 500;
+}
+
+.register-btn:hover {
+    background: #f9f5ff;
+    border-color: #cbb8ff;
+    transform: translateY(-2px);
+}
+
+.forgot-password {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.forgot-password a {
+    color: #8a63d2;
+    text-decoration: none;
+    font-size: 14px;
+    transition: color 0.2s;
+    position: relative;
+    padding-bottom: 2px;
+}
+
+.forgot-password a:hover {
+    color: #6a21a8;
+}
+
+.forgot-password a::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 1px;
+    background: #8a63d2;
+    transition: width 0.3s;
+}
+
+.forgot-password a:hover::after {
+    width: 100%;
+}
+
+/* Анимация формы */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.login-container {
+    animation: fadeIn 0.6s ease-out forwards;
+}
+
+/*=============Стили для создания нового пользователя=============*/
+/* Центрирование контейнера */
+.registration-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 40px;
+    padding-bottom: 40px; /* чтобы внизу тоже был воздух */
+}
+
+/* Карточка формы */
+.registration-card {
+    background-color: #fff;
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(128, 0, 128, 0.2);
+    width: 100%;
+    max-width: 500px;
+}
+
+/* Заголовки и подписи */
+.form-label {
+    display: block;
+    margin-bottom: 5px;
+    color: #5e2a84;
+    font-weight: 600;
+}
+
+/* Поля формы */
+.registration-form input[type="text"],
+.registration-form input[type="email"],
+.registration-form input[type="password"],
+.registration-form input[type="file"] {
+    width: 100%;
+    padding: 10px 12px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 16px;
+    transition: border 0.3s;
+}
+
+.registration-form input:focus {
+    border-color: #a052d3;
+    outline: none;
+}
+
+/* Строка с двумя полями */
+.form-row {
+    display: flex;
+    gap: 20px;
+}
+
+.half-width {
+    flex: 1;
+}
+
+/* Кнопка отправки */
+.submit-btn {
+    width: 100%;
+    background-color: #8a2be2;
+    color: #fff;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.submit-btn:hover {
+    background-color: #7326ba;
+}
+
+/* Ссылка на вход */
+.login-link-Input {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 14px;
+}
+
+.login-link-Input a {
+    color: #6a0dad;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.login-link-Input a:hover {
+    text-decoration: underline;
+}
+
+/* Иконки рядом с лейблами */
+.form-label i {
+    margin-right: 6px;
+    color: #8a2be2;
+}
+
+.form-error {
+    background-color: #fff0f5;
+    border: 1px solid #e066a1;
+    color: #a80050;
+    padding: 10px 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    font-size: 14px;
+}
+
+/*=================Обработка ошибок====================*/
+/* Стили для списка ошибок */
+.errorlist {
+    color: #d93025;           /* насыщенный красный */
+    background-color: #fce8e6; /* светло-красный фон */
+    border: 1px solid #d93025;
+    border-radius: 4px;
+    padding: 10px 15px;
+    margin-top: 5px;
+    margin-bottom: 15px;
+    font-size: 14px;
+    list-style-type: none;    /* убирает маркеры */
+}
+
+/* Подчёркиваем каждый пункт */
+.errorlist li {
+    margin-left: 0;
+    padding-left: 0;
+}
+/* выделяем ошибки не полей (non_field_errors) */
+.form-error {
+    color: #d93025;
+    background-color: #fce8e6;
+    border: 1px solid #d93025;
+    border-radius: 6px;
+    padding: 12px 18px;
+    margin-bottom: 20px;
+    font-weight: 600;
+}
+
+/*================Стили для формы редактирования данных пользователей===================*/
+.profile-container {
+    max-width: 600px;
+    margin: 40px auto;
+    background: #f8f3fc;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(128, 0, 128, 0.1);
+    font-family: 'Segoe UI', sans-serif;
+}
+
+.profile-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.avatar-block {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.avatar {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #b388eb;
+    margin-bottom: 10px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.form-fields {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group label {
+    margin-bottom: 5px;
+    font-weight: 500;
+    color: #5e2a84;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    padding: 10px;
+    font-size: 15px;
+    border: 1px solid #b388eb;
+    border-radius: 6px;
+    background-color: white;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    border-color: #7e57c2;
+    box-shadow: 0 0 0 2px rgba(126, 87, 194, 0.2);
+    outline: none;
+}
+
+.error {
+    color: #d93025;
+    background-color: #fce8e6;
+    border: 1px solid #d93025;
+    border-radius: 5px;
+    padding: 8px 12px;
+    margin-top: 6px;
+    font-size: 14px;
+}
+
+.save-btn {
+    align-self: flex-start;
+    padding: 10px 20px;
+    background-color: #7e57c2;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 15px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.save-btn:hover {
+    background-color: #6a3ea1;
 }

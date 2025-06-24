@@ -27,6 +27,18 @@
             <a href="/" class="header_callback-link"><i>обратный звонок</i></a>
           </div>
         </div>
+        <div class="input-button">
+          {% if request.user.is_authenticated %}
+            <i class="fa-solid fa-user user-icon" style="color: purple; font-size: 30px;"></i>
+            <a href="{% url 'profile' %}" class="input-registration username-link">
+              <strong>{{ request.user.username }}</strong>
+            </a>
+            <a href="{% url 'logout' %}" class="input-registration logout-link">Выход</a>
+          {% else %}
+            <i class="fa-solid fa-user user-icon" style="color: purple; font-size: 30px;"></i>
+            <a href="{% url 'login' %}" class="input-registration login-link">Вход/Регистрация</a>
+          {% endif %}
+        </div>
       </div>
     </div>
 

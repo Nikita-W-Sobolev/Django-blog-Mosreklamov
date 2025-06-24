@@ -6,6 +6,7 @@ __pycache__/
 db.sqlite3
 /media/
 /staticfiles/
+mosreklamov/mosreklamov/settings.py
 
 # Environments
 .env

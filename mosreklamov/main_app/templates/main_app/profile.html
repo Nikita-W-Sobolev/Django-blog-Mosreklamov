@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+    <div class="title-body">{{ title }}</div>
+    <div class="profile-container">
+        <form method="post" enctype="multipart/form-data" class="profile-form">
+            {% csrf_token %}
+            <!-- Фото профиля -->
+            <div class="avatar-block">
+                {% if user.photo %}
+                    <img src="{{ user.photo.url }}" class="avatar">
+                {% else %}
+                    <img src="{{ default_image }}" class="avatar">
+                {% endif %}
+                {{ form.photo }}
+            </div>
+
+            <!-- Основные поля -->
+            <div class="form-fields">
+                {% for field in form %}
+                    {% if field.name != 'photo' %}
+                        <div class="form-group">
+                            <label>{{ field.label }}</label>
+                            {{ field }}
+                            {% if field.errors %}
+                                <div class="error">{{ field.errors }}</div>
+                            {% endif %}
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+
+            <button type="submit" class="save-btn">Сохранить</button>
+        </form>
+    </div>
+{% endblock %}

@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="title-body">{{ title }}</div>
+
+<div class="registration-container">
+    <div class="registration-card">
+        <form method="post" enctype="multipart/form-data" class="registration-form">
+            {% csrf_token %}
+
+            {% if form.non_field_errors %}
+                <div class="form-error">
+                    {{ form.non_field_errors }}
+                </div>
+            {% endif %}
+
+            <div class="form-group">
+                <label for="{{ form.username.id_for_label }}" class="form-label">
+                    <i class="fas fa-user"></i> Логин
+                </label>
+                {{ form.username }}
+                {{ form.username.errors }}
+            </div>
+
+            <div class="form-group">
+                <label for="{{ form.email.id_for_label }}" class="form-label">
+                    <i class="fas fa-envelope"></i> Email
+                </label>
+                {{ form.email }}
+                {{ form.email.errors }}
+            </div>
+
+            <div class="form-row">
+                <div class="form-group half-width">
+                    <label for="{{ form.first_name.id_for_label }}" class="form-label">
+                        <i class="fas fa-id-card"></i> Имя
+                    </label>
+                    {{ form.first_name }}
+                    {{ form.first_name.errors }}
+                </div>
+
+                <div class="form-group half-width">
+                    <label for="{{ form.last_name.id_for_label }}" class="form-label">
+                        <i class="fas fa-id-card"></i> Фамилия
+                    </label>
+                    {{ form.last_name }}
+                    {{ form.last_name.errors }}
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="{{ form.photo.id_for_label }}" class="form-label">
+                    <i class="fas fa-camera"></i> Фото профиля
+                </label>
+                <div class="file-upload">
+                    {{ form.photo }}
+                    {{ form.photo.errors }}
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="{{ form.password1.id_for_label }}" class="form-label">
+                    <i class="fas fa-lock"></i> Пароль
+                </label>
+                {{ form.password1 }}
+                {{ form.password1.errors }}
+            </div>
+
+            <div class="form-group">
+                <label for="{{ form.password2.id_for_label }}" class="form-label">
+                    <i class="fas fa-lock"></i> Подтверждение пароля
+                </label>
+                {{ form.password2 }}
+            </div>
+
+            <button type="submit" class="submit-btn">
+                <i class="fas fa-user-plus"></i> Зарегистрироваться
+            </button>
+
+            <div class="login-link-Input">
+                Уже есть аккаунт? <a href="{% url 'login' %}">Войти</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="title-body">{{ title }}</div>
+<div class="login-container">
+    <form method="post" class="login-form">
+        {% csrf_token %}
+
+        <label for="id_username">Email или логин</label>
+        {{ form.username }}
+
+        <label for="id_password">Пароль</label>
+        {{ form.password }}
+
+        <div class="remember-me">
+            {{form.remember_me}} <label for='{{form.remember_me.id_for_label}}'>Запомнить меня</label>
+        </div>
+
+        <button type="submit" class="btn login-btn">ВОЙТИ</button>
+        <a href="{% url 'register' %}" class="btn register-btn">ЗАРЕГИСТРИРОВАТЬСЯ</a>
+        <div class="forgot-password">
+            <a href="{% url 'password_reset' %}">Забыли пароль?</a>
+        </div>
+    </form>
+</div>
+
+{% endblock %}
