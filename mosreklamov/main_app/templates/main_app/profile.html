@@ -2,36 +2,76 @@
 {% load static %}
 
 {% block content %}
-    <div class="title-body">{{ title }}</div>
-    <div class="profile-container">
-        <form method="post" enctype="multipart/form-data" class="profile-form">
-            {% csrf_token %}
-            <!-- Фото профиля -->
-            <div class="avatar-block">
+<!--<div class="title-body">{{ title }}</div>-->
+<div class="profile-modern-container">
+    <h1 class="profile-modern-title">{{ title }}</h1>
+
+    <div class="profile-modern-card">
+        <!-- Аватар и фото -->
+        <div class="avatar-modern-block">
+            <div class="avatar-wrapper">
                 {% if user.photo %}
-                    <img src="{{ user.photo.url }}" class="avatar">
+                    <img src="{{ user.photo.url }}" class="avatar-modern">
                 {% else %}
-                    <img src="{{ default_image }}" class="avatar">
+                    <img src="{{ default_image }}" class="avatar-modern">
                 {% endif %}
+                <label for="id_photo" class="avatar-upload-btn">
+                    <i class="fas fa-camera"></i>
+                </label>
                 {{ form.photo }}
             </div>
+        </div>
 
-            <!-- Основные поля -->
-            <div class="form-fields">
+        <!-- Форма данных -->
+        <form method="post" enctype="multipart/form-data" class="profile-modern-form">
+            {% csrf_token %}
+
+            <div class="modern-form-grid">
                 {% for field in form %}
                     {% if field.name != 'photo' %}
-                        <div class="form-group">
-                            <label>{{ field.label }}</label>
-                            {{ field }}
+                        <div class="modern-form-group">
+                            <label class="modern-input-label">
+                                {{ field.label }}
+                                {% if field.field.required %}<span class="required-star">*</span>{% endif %}
+                            </label>
+
+                            {% if field.name == 'date_of_birth' %}
+                                <div class="date-input-wrapper">
+                                    {{ field }}
+                                    <i class="fas fa-calendar-alt date-icon"></i>
+                                </div>
+                            {% else %}
+                                {{ field }}
+                            {% endif %}
+
                             {% if field.errors %}
-                                <div class="error">{{ field.errors }}</div>
+                                <div class="modern-error">{{ field.errors }}</div>
                             {% endif %}
                         </div>
                     {% endif %}
                 {% endfor %}
             </div>
 
-            <button type="submit" class="save-btn">Сохранить</button>
+            <div class="form-actions">
+                <button type="submit" class="modern-save-btn">
+                    <i class="fas fa-save"></i> Сохранить изменения
+                </button>
+            </div>
         </form>
+
+        <!-- Блок безопасности -->
+        <div class="modern-security-section">
+            <h3 class="modern-security-title">
+                <i class="fas fa-shield-alt"></i> Безопасность аккаунта
+            </h3>
+            <a href="{% url 'password_change' %}" class="modern-password-btn">
+                <i class="fas fa-key"></i> Сменить пароль
+            </a>
+            <a href="{% url 'account_delete' %}" class="modern-delete-btn">
+                <i class="fas fa-user-times"></i> Удалить аккаунт
+            </a>
+
+        </div>
     </div>
+</div>
 {% endblock %}

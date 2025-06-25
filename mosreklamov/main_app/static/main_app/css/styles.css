@@ -711,12 +711,7 @@ a.back-to-category:hover:before {
 .add_page button[type="submit"]:hover {
     background: purple;
 }
-/* Стили для ошибок */
-.form-error {
-    color: #e74c3c;
-    font-size: 14px;
-    margin-top: 5px;
-}
+
 /* Стили для выбора категорий и тегов */
 .add_page select[multiple] {
     height: auto;
@@ -1192,16 +1187,6 @@ a.back-to-category:hover:before {
     color: #8a2be2;
 }
 
-.form-error {
-    background-color: #fff0f5;
-    border: 1px solid #e066a1;
-    color: #a80050;
-    padding: 10px 15px;
-    border-radius: 8px;
-    margin-bottom: 20px;
-    font-size: 14px;
-}
-
 /*=================Обработка ошибок====================*/
 /* Стили для списка ошибок */
 .errorlist {
@@ -1233,97 +1218,679 @@ a.back-to-category:hover:before {
 }
 
 /*================Стили для формы редактирования данных пользователей===================*/
-.profile-container {
-    max-width: 600px;
-    margin: 40px auto;
-    background: #f8f3fc;
-    padding: 30px;
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(128, 0, 128, 0.1);
-    font-family: 'Segoe UI', sans-serif;
+/* Стили для profile-modern-container */
+:root {
+    --primary-color: #6c5ce7;
+    --primary-hover: #5649c0;
+    --text-color: #2d3436;
+    --light-gray: #f1f2f6;
+    --border-color: #dfe6e9;
+    --error-color: #d63031;
+    --success-color: #00b894;
 }
 
-.profile-form {
+.profile-modern-container {
+    max-width: 800px;
+    margin: 30px auto;
+    padding: 0 20px;
+}
+
+.profile-modern-title {
+    color: var(--text-color);
+    text-align: center;
+    margin-bottom: 30px;
+    font-weight: 600;
+    font-size: 28px;
+}
+
+.profile-modern-card {
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.05);
+    padding: 40px;
+    position: relative;
+}
+
+.avatar-modern-block {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 30px;
+}
+
+.avatar-wrapper {
+    position: relative;
+    width: fit-content;
+}
+
+.avatar-modern {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid white;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.avatar-upload-btn {
+    position: absolute;
+    right: 10px;
+    bottom: 10px;
+    background: var(--primary-color);
+    color: white;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.avatar-upload-btn:hover {
+    background: var(--primary-hover);
+    transform: scale(1.1);
+}
+
+#id_photo {
+    display: none;
+}
+
+.profile-modern-form {
+    margin-top: 20px;
+}
+
+.modern-form-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.modern-form-group {
+    margin-bottom: 15px;
+}
+
+.modern-input-label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: var(--text-color);
+    font-size: 14px;
+}
+
+.required-star {
+    color: var(--error-color);
+    margin-left: 3px;
+}
+
+.modern-form-group input,
+.modern-form-group select,
+.modern-form-group textarea {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    font-size: 15px;
+    transition: all 0.3s;
+    background-color: white;
+}
+
+.modern-form-group input:focus,
+.modern-form-group select:focus,
+.modern-form-group textarea:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(108, 92, 231, 0.1);
+    outline: none;
+}
+/* Удалить аккаунт */
+.modern-delete-btn {
+    display: inline-block;
+    padding: 10px 15px;
+    background-color: #dc3545;
+    color: white;
+    border-radius: 6px;
+    text-decoration: none;
+    transition: background-color 0.2s ease-in-out;
+    margin-left: 15px;
+}
+
+.modern-delete-btn:hover {
+    background-color: #bd2130;
+}
+
+/* Специальные стили для поля даты */
+.date-input-wrapper {
+    position: relative;
+}
+
+.date-icon {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #636e72;
+    pointer-events: none;
+}
+
+input[type="date"] {
+    appearance: none;
+    padding-right: 40px !important;
+}
+
+/* Стили для ошибок */
+.modern-error {
+    color: var(--error-color);
+    font-size: 13px;
+    margin-top: 5px;
+    padding: 5px;
+    background: rgba(214, 48, 49, 0.05);
+    border-radius: 4px;
+}
+
+/* Кнопка сохранения */
+.form-actions {
+    margin-top: 30px;
+    text-align: center;
+}
+
+.modern-save-btn {
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.modern-save-btn:hover {
+    background: var(--primary-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(108, 92, 231, 0.2);
+}
+
+/* Секция безопасности */
+.modern-security-section {
+    margin-top: 40px;
+    padding-top: 30px;
+    border-top: 1px solid var(--border-color);
+}
+
+.modern-security-title {
+    color: var(--text-color);
+    font-size: 18px;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.modern-password-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 16px;
+    background: white;
+    color: var(--primary-color);
+    border: 1px solid var(--primary-color);
+    border-radius: 6px;
+    font-size: 14px;
+    transition: all 0.3s;
+    text-decoration: none;
+}
+
+.modern-password-btn:hover {
+    background: var(--primary-color);
+    color: white;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .profile-modern-card {
+        padding: 25px;
+    }
+
+    .modern-form-grid {
+        grid-template-columns: 1fr;
+    }
+}
+/*==============Стили для формы забыли пароль===================*/
+.auth-form {
+    max-width: 340px;
+    margin: 30px auto;
+    padding: 25px;
+    background: #f0f0f0;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.auth-title {
+    text-align: center;
+    margin: 0 0 20px;
+    color: #333;
+    font-size: 22px;
+}
+
+.auth-form__inner {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.auth-field {
+    display: flex;
+    flex-direction: column;
+}
+
+.auth-label {
+    margin-bottom: 6px;
+    font-size: 14px;
+    color: #555;
+}
+
+.auth-field input {
+    padding: 10px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 15px;
+}
+
+.auth-btn {
+    background: #4285f4;
+    color: white;
+    border: none;
+    padding: 12px;
+    border-radius: 4px;
+    font-size: 15px;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: background 0.2s;
+}
+
+.auth-btn:hover {
+    background: #3367d6;
+}
+
+/*===============Стили для сброса пароля done==================*/
+.password-reset-done-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 80vh;
+    padding: 20px;
+    background-color: #f5f5f5;
+}
+
+.password-reset-done-card {
+    max-width: 500px;
+    padding: 40px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.password-reset-done-icon {
+    width: 64px;
+    height: 64px;
+    margin-bottom: 20px;
+}
+
+.password-reset-done-title {
+    color: #333;
+    margin-bottom: 20px;
+    font-size: 24px;
+}
+
+.password-reset-done-messages {
+    margin-bottom: 25px;
+    text-align: left;
+}
+
+.password-reset-done-text {
+    color: #555;
+    line-height: 1.6;
+    margin-bottom: 15px;
+    font-size: 16px;
+}
+
+.password-reset-done-link {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #4a76a8;
+    color: white;
+    text-decoration: none;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+}
+
+.password-reset-done-link:hover {
+    background-color: #3a5f8a;
+}
+
+/*================Стили для самого изменения пароля====================*/
+.password-change-wrapper {
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+}
+
+.password-change-card {
+    width: 100%;
+    max-width: 450px;
+    background: white;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.input-label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 14px;
+    color: #4a5568;
+    font-weight: 500;
+}
+
+.required-mark {
+    color: #e53e3e;
+    margin-left: 3px;
+}
+
+.password-change-form input {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    font-size: 15px;
+    transition: all 0.2s;
+}
+
+.password-change-form input:focus {
+    border-color: #4a76a8;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(74, 118, 168, 0.1);
+}
+
+.submit-button {
+    width: 100%;
+    padding: 12px;
+    background-color: #4a76a8;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    margin-top: 10px;
+}
+
+.submit-button:hover {
+    background-color: #3a5f8a;
+}
+
+/*====================Пароль изменён=========================*/
+.password-success-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 70vh;
+    padding: 20px;
+    background-color: #f8f9fa;
+}
+
+.password-success-card {
+    max-width: 450px;
+    width: 100%;
+    padding: 40px 30px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    text-align: center;
+}
+
+.success-icon {
+    width: 60px;
+    height: 60px;
+    margin-bottom: 20px;
+}
+
+.success-title {
+    color: #2c3e50;
+    margin-bottom: 15px;
+    font-size: 24px;
+}
+
+.success-message {
+    color: #4a5568;
+    line-height: 1.5;
+    margin-bottom: 25px;
+    font-size: 16px;
+}
+
+.login-link-success {
+    display: inline-block;
+    padding: 12px 25px;
+    background-color: #4a76a8;
+    color: white;
+    text-decoration: none;
+    border-radius: 6px;
+    font-weight: 500;
+    transition: background-color 0.3s;
+}
+
+.login-link-success:hover {
+    background-color: #3a5f8a;
+}
+
+/*===========Смена пароля================*/
+.password-change-container {
+    display: flex;
+    justify-content: center;
+    padding: 30px 15px;
+}
+
+.password-change-card {
+    width: 100%;
+    max-width: 500px;
+    background: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.08);
+}
+
+.password-change-form {
     display: flex;
     flex-direction: column;
     gap: 20px;
 }
 
-.avatar-block {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-bottom: 20px;
-}
-
-.avatar {
-    width: 120px;
-    height: 120px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 3px solid #b388eb;
-    margin-bottom: 10px;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-}
-
-.form-fields {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-}
-
 .form-group {
     display: flex;
     flex-direction: column;
+    gap: 8px;
 }
 
-.form-group label {
-    margin-bottom: 5px;
+.form-label {
+    font-size: 14px;
+    color: #4a5568;
     font-weight: 500;
-    color: #5e2a84;
 }
 
-.form-group input,
-.form-group select,
-.form-group textarea {
-    padding: 10px;
-    font-size: 15px;
-    border: 1px solid #b388eb;
+.password-change-form input {
+    padding: 12px 15px;
+    border: 1px solid #e2e8f0;
     border-radius: 6px;
-    background-color: white;
-    transition: border-color 0.2s, box-shadow 0.2s;
+    font-size: 15px;
+    transition: all 0.2s;
 }
 
-.form-group input:focus,
-.form-group select:focus,
-.form-group textarea:focus {
-    border-color: #7e57c2;
-    box-shadow: 0 0 0 2px rgba(126, 87, 194, 0.2);
+.password-change-form input:focus {
+    border-color: #4a76a8;
     outline: none;
+    box-shadow: 0 0 0 3px rgba(74, 118, 168, 0.1);
 }
 
-.error {
-    color: #d93025;
-    background-color: #fce8e6;
-    border: 1px solid #d93025;
-    border-radius: 5px;
-    padding: 8px 12px;
-    margin-top: 6px;
+.help-text {
+    font-size: 13px;
+    color: #718096;
+    margin-top: 5px;
+}
+
+.submit-btn {
+    background-color: #4a76a8;
+    color: white;
+    border: none;
+    padding: 12px;
+    border-radius: 6px;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    margin-top: 10px;
+}
+
+.submit-btn:hover {
+    background-color: #3a5f8a;
+}
+
+.form-global-error {
+    color: #e53e3e;
+    padding: 10px;
+    background: #fef2f2;
+    border-radius: 6px;
+    margin-bottom: 15px;
     font-size: 14px;
 }
 
-.save-btn {
-    align-self: flex-start;
-    padding: 10px 20px;
-    background-color: #7e57c2;
+.password-success-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 60vh;
+    padding: 20px;
+}
+
+.password-success-card {
+    max-width: 500px;
+    width: 100%;
+    padding: 40px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.08);
+    text-align: center;
+}
+
+.success-icon {
+    width: 60px;
+    height: 60px;
+    margin-bottom: 20px;
+}
+
+.success-title {
+    color: #2c3e50;
+    margin-bottom: 15px;
+    font-size: 24px;
+}
+
+.success-message {
+    color: #4a5568;
+    line-height: 1.5;
+    margin-bottom: 25px;
+    font-size: 16px;
+}
+
+.profile-link {
+    display: inline-block;
+    padding: 12px 25px;
+    background-color: #4a76a8;
     color: white;
-    border: none;
-    border-radius: 8px;
-    font-size: 15px;
-    cursor: pointer;
+    text-decoration: none;
+    border-radius: 6px;
+    font-weight: 500;
     transition: background-color 0.3s;
 }
 
-.save-btn:hover {
-    background-color: #6a3ea1;
+.profile-link:hover {
+    background-color: #3a5f8a;
+}
+
+.confirm-delete {
+    max-width: 400px;
+    margin: 80px auto;
+    padding: 30px 25px;
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #333;
+    text-align: center;
+}
+
+.confirm-delete h2 {
+    font-size: 1.8rem;
+    margin-bottom: 15px;
+    color: #d9534f; /* красный акцент */
+}
+
+.confirm-delete p {
+    font-size: 1.1rem;
+    margin-bottom: 30px;
+}
+
+.confirm-delete strong {
+    font-weight: 600;
+    color: #a94442; /* чуть темнее красного */
+}
+
+.confirm-delete form {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.confirm-delete .btn {
+    padding: 12px 28px;
+    font-size: 1rem;
+    border-radius: 8px;
+    cursor: pointer;
+    border: none;
+    text-decoration: none;
+    transition: background-color 0.25s ease;
+    min-width: 130px;
+}
+
+/* Кнопка удаления — красная */
+.confirm-delete .btn-danger {
+    background-color: #d9534f;
+    color: white;
+}
+
+.confirm-delete .btn-danger:hover,
+.confirm-delete .btn-danger:focus {
+    background-color: #c9302c;
+}
+
+/* Кнопка отмены — серая */
+.confirm-delete .btn-secondary {
+    background-color: #6c757d;
+    color: white;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.confirm-delete .btn-secondary:hover,
+.confirm-delete .btn-secondary:focus {
+    background-color: #5a6268;
 }

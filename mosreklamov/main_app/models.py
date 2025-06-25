@@ -6,6 +6,10 @@ from slugify import slugify
 
 
 class Category(models.Model):
+    """
+    Модель категории для статей блога.
+    Содержит название и уникальный slug для URL.
+    """
     name = models.CharField(max_length=100)
     slug = models.SlugField(max_length=100, unique=True, db_index=True)
     def __str__(self):
@@ -15,10 +19,16 @@ class Category(models.Model):
         verbose_name_plural = "Категории"
         ordering = ["id"]
     def get_absolute_url(self):
+        """
+        Возвращает URL страницы категории по её slug.
+        """
         return reverse('category', kwargs={'cat_slug': self.slug})
 
 
 class Article(models.Model):
+    """
+    Модель статьи блога с заголовком, содержимым, статусом публикации и связями с категориями и тегами.
+    """
     STATUS_CHOICES = [('published', 'Опубликовано'), ('unpublished', 'Неопубликовано')]
 
     title = models.CharField(max_length=100, verbose_name='Заголовок')
@@ -48,9 +58,15 @@ class Article(models.Model):
     def __str__(self):
         return self.title
     def get_absolute_url(self):
+        """
+        Возвращает URL страницы статьи по её slug.
+        """
         return reverse('article', kwargs={'art_slug': self.slug})
 
 class TagPost(models.Model):
+    """
+    Модель тега для статей.
+    """
     name = models.CharField(max_length=100, db_index=True)
     slug = models.SlugField(max_length=255, unique=True, db_index=True)
     def __str__(self):
@@ -60,9 +76,16 @@ class TagPost(models.Model):
         verbose_name_plural = "Теги"
         ordering = ["id"]
     def get_absolute_url(self):
+        """
+        Возвращает URL страницы статьи по её slug.
+        """
         return reverse('tag', kwargs={'tag_slug': self.slug})
 
 # класс для переопределения модели пользователя
 class User(AbstractUser):
+    """
+    Кастомная модель пользователя с дополнительными полями:
+    фотография и дата рождения.
+    """
     photo = models.ImageField(upload_to='users/', blank=True, null=True, verbose_name='Фотография')
     birth_date = models.DateField(blank=True, null=True, verbose_name="Дата рождения")

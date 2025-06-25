@@ -1,7 +1,8 @@
 from django.contrib import messages
-from django.contrib.auth import logout
+from django.contrib.auth import logout, get_user_model
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.views import LoginView
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.views import LoginView, PasswordChangeView
 from django.core.paginator import Paginator
 from django.http import HttpResponse, HttpResponseNotFound, Http404, \
     HttpResponseRedirect
@@ -9,10 +10,10 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse, reverse_lazy
 from django.template.loader import render_to_string
 from django.views.decorators.http import require_POST
-
+from django.views.generic import DeleteView
 from mosreklamov import settings
 from .forms import AddPostForm, CustomCreationForm, LoginUserForm, \
-    ProfileEditForm
+    ProfileEditForm, UserPasswordChangeForm
 from .models import Category, Article, TagPost
 
 main_menu = [{'title': 'ГЛАВНАЯ', 'url_name': 'home'},
@@ -24,6 +25,9 @@ tags = TagPost.objects.all()
 categories_list = Category.objects.all()
 
 def index(request):
+    """
+    Главная страница сайта.
+    """
     data = {
         # 'categories': categories_list,
         'cat_selected': 0,  # Ничего не выбрано
@@ -35,6 +39,9 @@ def index(request):
 
 
 def show_category(request, cat_slug):
+    """
+    Отображение статей выбранной категории с пагинацией.
+    """
     category = get_object_or_404(Category, slug=cat_slug)
     articles = category.articles.filter(is_published='published')
     # добавляем пагинацию
@@ -53,6 +60,9 @@ def show_category(request, cat_slug):
     return render(request, "main_app/index.html", context=data)
 
 def show_article(request, art_slug):
+    """
+    Отображение отдельной статьи.
+    """
     article = get_object_or_404(Article, slug=art_slug, is_published='published')
     category = article.categories
     data = {
@@ -67,6 +77,9 @@ def show_article(request, art_slug):
     return render(request, "main_app/index.html", context=data)
 
 def show_tag_postlist(request, tag_slug):
+    """
+    Отображение статей, связанных с определенным тегом, с пагинацией.
+    """
     my_tag = get_object_or_404(TagPost, slug=tag_slug)
     posts = my_tag.tags.filter(is_published='published')
     # добавляем пагинацию
@@ -86,11 +99,17 @@ def show_tag_postlist(request, tag_slug):
 
 
 def nashi_raboti(request):
+    """
+    Заглушка для страницы 'Наши работы'.
+    """
     return HttpResponse('<h1>Наши работы</h1>')
 
 
 # функция для работы с добавлением новой статьи
 def dobavit_staty(request):
+    """
+    Добавление новой статьи. Обрабатывает GET и POST запросы.
+    """
     if request.method == 'POST':
         form = AddPostForm(request.POST, request.FILES)
         if form.is_valid():
@@ -112,6 +131,9 @@ def dobavit_staty(request):
 
 # функция для работы с редактированием статьи
 def edit_article(request, article_id):
+    """
+    Редактирование существующей статьи.
+    """
     current_article = get_object_or_404(Article, id=article_id)  # получаем текущую статью
     if request.method == 'POST':
         form = AddPostForm(request.POST, request.FILES, instance=current_article)
@@ -135,6 +157,9 @@ def edit_article(request, article_id):
 # Функция для работы с удалением статьи
 @require_POST  # Разрешает только POST запросы
 def delete_article(request, article_id):
+    """
+    Удаление статьи. Разрешены только POST запросы.
+    """
     current_article = get_object_or_404(Article, id=article_id)
     current_article.delete()
     messages.success(request, "Статья успешно удалена")
@@ -142,15 +167,24 @@ def delete_article(request, article_id):
 
 
 def contacts(request):
+    """
+    Заглушка для страницы контактов.
+    """
     return HttpResponse('<h1>Контакты</h1>')
 
 
 def page_not_found(request, exception):
+    """
+    Кастомная страница 404 ошибки.
+    """
     return HttpResponseNotFound('<h1><u>Страница не найдена</u></h1>')
 
 
 # функция для регистрации нового пользователя
 def register(request):
+    """
+    Регистрация нового пользователя.
+    """
     if request.method == "POST":
         form = CustomCreationForm(request.POST)
         if form.is_valid():
@@ -168,8 +202,10 @@ def register(request):
     return render(request, 'main_app/register.html', context=data)
 
 
-# для отображения/изменения профиля пользователя
 def profile_view(request):
+    """
+    Просмотр и редактирование профиля пользователя.
+    """
     user = request.user
     default_image = settings.DEFAULT_USER_IMAGE
     if request.method == "POST":
@@ -193,6 +229,10 @@ def profile_view(request):
 
 # для отображения формы входа
 class LoginUser(LoginView):
+    """
+    Класс-представление для входа пользователя.
+    Поддерживает опцию "Запомнить меня".
+    """
     form_class = LoginUserForm  # класс формы для аутентификации или используем стандартную AuthenticationForm
     template_name = 'main_app/login.html'  # маршрут до шаблона
     # дополнительные переменные, передаваемые в шаблон
@@ -212,7 +252,31 @@ class LoginUser(LoginView):
     def get_success_url(self):  # Метод для определения URL, по которому перейдём после удачной авторизации
         return reverse_lazy('home')
 
-# здесь прописана функция представления выхода из системы
 def logout_user(request):
+    """
+    Функция выхода пользователя из системы.
+    """
     logout(request)
     return HttpResponseRedirect(reverse('login'))
+
+class UserPasswordChange(PasswordChangeView):
+    """
+    Класс-представление для изменения пароля пользователя.
+    """
+    form_class = UserPasswordChangeForm
+    success_url = reverse_lazy("password_change_done")
+    template_name = "main_app/password_change_form.html"
+    extra_context = {'title': "Изменение пароля"}
+
+class UserDeleteView(LoginRequiredMixin, DeleteView):
+    """
+    Класс-представление для удаления текущего пользователя.
+    """
+    model = get_user_model()
+    template_name = 'main_app/account_confirm_delete.html'
+    success_url = reverse_lazy('home')  # куда перенаправить после удаления
+    def get_object(self, queryset=None):
+        """
+        Возвращает объект текущего аутентифицированного пользователя.
+        """
+        return self.request.user

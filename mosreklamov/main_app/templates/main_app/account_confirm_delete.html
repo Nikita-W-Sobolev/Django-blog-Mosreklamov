@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="confirm-delete">
+    <h2>Вы уверены, что хотите удалить аккаунт?</h2>
+    <p>Это действие <strong>необратимо</strong>.</p>
+
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger">Удалить аккаунт</button>
+        <a href="{% url 'profile' %}" class="btn btn-secondary">Отмена</a>
+    </form>
+</div>
+{% endblock %}
