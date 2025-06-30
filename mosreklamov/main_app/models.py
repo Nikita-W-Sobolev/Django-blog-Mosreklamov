@@ -4,6 +4,8 @@ from django.urls import reverse
 from django_extensions.db.fields import AutoSlugField
 from slugify import slugify
 
+from mosreklamov import settings
+
 
 class Category(models.Model):
     """
@@ -51,6 +53,7 @@ class Article(models.Model):
     categories = models.ForeignKey('Category', on_delete=models.CASCADE, related_name='articles', verbose_name='Категории')
     tags = models.ManyToManyField('TagPost', blank=True, related_name='tags', verbose_name='Теги')
     photo = models.ImageField(upload_to="articles_image", default=None, blank=True, null=True, verbose_name='Изображение')
+    author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)  # добавляем автора статьи
     class Meta:
         verbose_name = "Статья"
         verbose_name_plural = "Статьи"

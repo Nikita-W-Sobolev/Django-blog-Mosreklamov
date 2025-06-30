@@ -1,8 +1,9 @@
 from django.contrib import messages
 from django.contrib.auth import logout, get_user_model
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView, PasswordChangeView
+from django.core.exceptions import PermissionDenied
 from django.core.paginator import Paginator
 from django.http import HttpResponse, HttpResponseNotFound, Http404, \
     HttpResponseRedirect
@@ -130,11 +131,18 @@ def dobavit_staty(request):
 
 
 # функция для работы с редактированием статьи
+@login_required
+@permission_required('main_app.change_article', raise_exception=True)
 def edit_article(request, article_id):
     """
-    Редактирование существующей статьи.
+    Редактирование статьи с проверкой:
+    1. Только авторизованные пользователи
+    2. Только с правами change_article
+    3. Только автор или суперпользователь
     """
     current_article = get_object_or_404(Article, id=article_id)  # получаем текущую статью
+    if not (request.user == current_article.author or request.user.is_superuser):  # Проверка, что пользователь - автор статьи или админ
+        raise PermissionDenied
     if request.method == 'POST':
         form = AddPostForm(request.POST, request.FILES, instance=current_article)
         if form.is_valid():
@@ -146,6 +154,7 @@ def edit_article(request, article_id):
         'title': 'Изменение статьи',
         # 'data': main_menu,
         # 'categories': categories_list,
+
         'cat_selected': None,
         'add_edit_article': True,
         # 'tags': tags,
@@ -156,11 +165,19 @@ def edit_article(request, article_id):
 
 # Функция для работы с удалением статьи
 @require_POST  # Разрешает только POST запросы
+@login_required  # Гарантирует, что только авторизованные пользователи получат доступ
+@permission_required('main_app.delete_article', raise_exception=True)  # проверяет конкретные права, raise_exception=True - возвращает 403 вместо перенаправления на логин
 def delete_article(request, article_id):
     """
-    Удаление статьи. Разрешены только POST запросы.
+    Удаление статьи с проверкой:
+    1. Только POST-запросы
+    2. Только авторизованные пользователи
+    3. Только с правами delete_article
+    4. Только автор или суперпользователь
     """
     current_article = get_object_or_404(Article, id=article_id)
+    if not (request.user == current_article.author or request.user.is_superuser):  # Дополнительная проверка, что пользователь - автор статьи или админ
+        raise PermissionDenied
     current_article.delete()
     messages.success(request, "Статья успешно удалена")
     return redirect('home')
@@ -211,8 +228,15 @@ def profile_view(request):
     if request.method == "POST":
         form = ProfileEditForm(request.POST, request.FILES, instance=user)
         if form.is_valid():
+            # if 'photo' in request.FILES:
+            #     # Удаляем старое фото, если оно было
+            #     if user.photo:
+            #         user.photo.delete(save=False)
+            #     user.photo = request.FILES['photo']
             form.save()
             return redirect('home')
+        else:
+            messages.error(request, "Ошибка при обновлении профиля")
     else:
         form = ProfileEditForm(instance=user)  # Заполняем форму текущими данными пользователя
     context = {

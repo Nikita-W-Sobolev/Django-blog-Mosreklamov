@@ -41,11 +41,15 @@
         </div>
       </div>
     </div>
-
+<!--    Перебираем пункты верхнего меню + проверяем права пользователей-->
     <div class="wrap_main_menu">
       <div class="main_menu">
         {% for i in data %}
-        <a href="{% url i.url_name %}">{{i.title}}</a>
+          {% if i.url_name != 'dobavit_staty' %}
+            <a href="{% url i.url_name %}">{{i.title}}</a>
+          {% elif user.is_authenticated and perms.main_app.add_article %}
+            <a href="{% url i.url_name %}">{{i.title}}</a>
+          {% endif %}
         {% endfor %}
       </div>
       <div class="order">ОФОРМИТЬ ЗАКАЗ ОНЛАЙН</div>

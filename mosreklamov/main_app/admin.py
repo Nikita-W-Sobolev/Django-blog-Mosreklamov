@@ -27,3 +27,4 @@ class CategoryAdmin(admin.ModelAdmin):
 @admin.register(User)
 class CustomUserAdmin(admin.ModelAdmin):
     list_display = ('username', 'password', 'first_name', 'last_name', 'photo', 'email', 'date_joined')
+    filter_horizontal = ['groups', 'user_permissions']

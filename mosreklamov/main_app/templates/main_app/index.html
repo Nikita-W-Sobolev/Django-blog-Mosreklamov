@@ -55,8 +55,12 @@
     <div class="article-footer">
       <a class="back-to-category" href="{{ article.categories.get_absolute_url }}">Назад в рубрику</a>
       <div class="article-actions">
-        <a class="edit-btn" href="{% url 'edit_article' article.id %}">✎ Изменить</a>
-        <button class="delete-btn" onclick="showDeleteModal({{ article.id }})">🗑 Удалить</button>
+        {% if user.is_authenticated and perms.main_app.change_article %}
+          <a class="edit-btn" href="{% url 'edit_article' article.id %}">✎ Изменить</a>
+        {% endif %}
+        {% if user.is_authenticated and perms.main_app.delete_article %}
+          <button class="delete-btn" onclick="showDeleteModal({{ article.id }})">🗑 Удалить</button>
+        {% endif %}
       </div>
     </div>
   </div>
