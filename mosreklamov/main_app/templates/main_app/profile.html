@@ -2,86 +2,87 @@
 {% load static %}
 
 {% block content %}
-<div class="profile-modern-container">
-    <h1 class="profile-modern-title">{{ title }}</h1>
+{% if user.is_authenticated and not user.social_auth.exists %}  <!--Если пользователь зашёл не через соц. сети -->
+    <div class="profile-modern-container">
+        <h1 class="profile-modern-title">{{ title }}</h1>
 
-    <div class="profile-modern-card">
-        <!-- Форма данных (теперь включает аватар) -->
-        <form method="post" enctype="multipart/form-data" class="profile-modern-form">
-            {% csrf_token %}
+        <div class="profile-modern-card">
+            <!-- Форма данных (теперь включает аватар) -->
+            <form method="post" enctype="multipart/form-data" class="profile-modern-form">
+                {% csrf_token %}
 
-            <!-- Перенесённый блок аватара ВНУТРЬ формы -->
-            <div class="avatar-modern-block">
-                <div class="avatar-wrapper">
-                    {% if user.photo %}
-                        <img src="{{ user.photo.url }}" class="avatar-modern" id="avatar-preview">
-                    {% else %}
-                        <img src="{{ default_image }}" class="avatar-modern" id="avatar-preview">
-                    {% endif %}
-                    <label for="id_photo" class="avatar-upload-btn">
-                        <i class="fas fa-camera"></i>
-                    </label>
-                    {{ form.photo }}
+                <div class="avatar-modern-block">
+                    <div class="avatar-wrapper">
+                        {% if user.photo %}
+                            <img src="{{ user.photo.url }}" class="avatar-modern" id="avatar-preview">
+                        {% else %}
+                            <img src="{{ default_image }}" class="avatar-modern" id="avatar-preview">
+                        {% endif %}
+                        <label for="id_photo" class="avatar-upload-btn">
+                            <i class="fas fa-camera"></i>
+                        </label>
+                        {{ form.photo }}
+                    </div>
                 </div>
-            </div>
 
-            <!-- Остальные поля формы -->
-            <div class="modern-form-grid">
-                {% for field in form %}
-                    {% if field.name != 'photo' %}
-                        <div class="modern-form-group">
-                            <label class="modern-input-label">
-                                {{ field.label }}
-                                {% if field.field.required %}<span class="required-star">*</span>{% endif %}
-                            </label>
+                <!-- Остальные поля формы -->
+                <div class="modern-form-grid">
+                    {% for field in form %}
+                        {% if field.name != 'photo' %}
+                            <div class="modern-form-group">
+                                <label class="modern-input-label">
+                                    {{ field.label }}
+                                    {% if field.field.required %}<span class="required-star">*</span>{% endif %}
+                                </label>
 
-                            {% if field.name == 'date_of_birth' %}
-                                <div class="date-input-wrapper">
+                                {% if field.name == 'date_of_birth' %}
+                                    <div class="date-input-wrapper">
+                                        {{ field }}
+                                        <i class="fas fa-calendar-alt date-icon"></i>
+                                    </div>
+                                {% else %}
                                     {{ field }}
-                                    <i class="fas fa-calendar-alt date-icon"></i>
-                                </div>
-                            {% else %}
-                                {{ field }}
-                            {% endif %}
+                                {% endif %}
 
-                            {% if field.errors %}
-                                <div class="modern-error">{{ field.errors }}</div>
-                            {% endif %}
-                        </div>
-                    {% endif %}
-                {% endfor %}
+                                {% if field.errors %}
+                                    <div class="modern-error">{{ field.errors }}</div>
+                                {% endif %}
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="modern-save-btn">
+                        <i class="fas fa-save"></i> Сохранить изменения
+                    </button>
+                </div>
+            </form>
+
+            <!-- Блок безопасности -->
+            <div class="modern-security-section">
+                <h3 class="modern-security-title">
+                    <i class="fas fa-shield-alt"></i> Безопасность аккаунта
+                </h3>
+                <a href="{% url 'password_change' %}" class="modern-password-btn">
+                    <i class="fas fa-key"></i> Сменить пароль
+                </a>
+                <a href="{% url 'account_delete' %}" class="modern-delete-btn">
+                    <i class="fas fa-user-times"></i> Удалить аккаунт
+                </a>
             </div>
-
-            <div class="form-actions">
-                <button type="submit" class="modern-save-btn">
-                    <i class="fas fa-save"></i> Сохранить изменения
-                </button>
-            </div>
-        </form>
-
-        <!-- Блок безопасности -->
-        <div class="modern-security-section">
-            <h3 class="modern-security-title">
-                <i class="fas fa-shield-alt"></i> Безопасность аккаунта
-            </h3>
-            <a href="{% url 'password_change' %}" class="modern-password-btn">
-                <i class="fas fa-key"></i> Сменить пароль
-            </a>
-            <a href="{% url 'account_delete' %}" class="modern-delete-btn">
-                <i class="fas fa-user-times"></i> Удалить аккаунт
-            </a>
         </div>
     </div>
-</div>
 
-<!-- Скрипт для предпросмотра аватара -->
-<script>
-document.getElementById('id_photo').addEventListener('change', function(e) {
-    const file = e.target.files[0];
-    if (file) {
-        const preview = document.getElementById('avatar-preview');
-        preview.src = URL.createObjectURL(file);
-    }
-});
-</script>
+    <!-- Скрипт для предпросмотра аватара -->
+    <script>
+    document.getElementById('id_photo').addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if (file) {
+            const preview = document.getElementById('avatar-preview');
+            preview.src = URL.createObjectURL(file);
+        }
+    });
+    </script>
+{% endif %}
 {% endblock %}

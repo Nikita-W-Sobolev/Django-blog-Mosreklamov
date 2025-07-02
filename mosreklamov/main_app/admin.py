@@ -1,7 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.models import Group
-
 from main_app.models import Article, Category, User
 
 @admin.register(Article)
@@ -26,5 +25,13 @@ class CategoryAdmin(admin.ModelAdmin):
 # admin.site.register(User, UserAdmin)
 @admin.register(User)
 class CustomUserAdmin(admin.ModelAdmin):
-    list_display = ('username', 'password', 'first_name', 'last_name', 'photo', 'email', 'date_joined')
+    readonly_fields = ['avatar_preview']  # Только просмотр
+    fieldsets = UserAdmin.fieldsets + (  # Это добавляет новую секцию в форме редактирования пользователя в админке.
+        ('Аватар', {'fields': ('photo', 'avatar_preview')}),
+    )
+    list_display = ('avatar_preview', 'username', 'password', 'first_name', 'last_name', 'photo', 'email', 'date_joined')
     filter_horizontal = ['groups', 'user_permissions']
+    list_display_links = ['avatar_preview', 'username']
+
+    def avatar_preview(self, obj):
+        return obj.avatar_preview()

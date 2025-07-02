@@ -25,6 +25,7 @@ from mosreklamov import settings
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('main_app.urls')),
+    path("social-auth/", include('social_django.urls', namespace="social")),  # для авторизации через GitHub
 ] + debug_toolbar_urls()
 
 # Это строчки для связывания маршрута с рабочим каталогом для отладочного сервера

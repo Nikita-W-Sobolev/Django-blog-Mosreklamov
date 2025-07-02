@@ -1,6 +1,7 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.urls import reverse
+from django.utils.safestring import mark_safe
 from django_extensions.db.fields import AutoSlugField
 from slugify import slugify
 
@@ -92,3 +93,10 @@ class User(AbstractUser):
     """
     photo = models.ImageField(upload_to='users/', blank=True, null=True, verbose_name='Фотография')
     birth_date = models.DateField(blank=True, null=True, verbose_name="Дата рождения")
+    # Далее код для отображения аватарки в админке
+    def avatar_preview(self):
+        if self.photo:
+            html = f'<img src="{self.photo.url}" width="100" height="100" style="object-fit: cover; border-radius: 6px;" />'
+            return mark_safe(html)  # Говорим Django: не экранируй, это безопасно(mark_safe)
+        return "(Нет изображения)"
+    avatar_preview.short_description = "Превью аватара"

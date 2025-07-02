@@ -222,7 +222,10 @@ def register(request):
 def profile_view(request):
     """
     Просмотр и редактирование профиля пользователя.
+    Защищено от изменений для социальных аккаунтов.
     """
+    if hasattr(request.user, 'social_auth') and request.user.social_auth.exists():
+        raise PermissionDenied("Редактирование профиля недоступно для социальных аккаунтов")
     user = request.user
     default_image = settings.DEFAULT_USER_IMAGE
     if request.method == "POST":
@@ -234,6 +237,7 @@ def profile_view(request):
             #         user.photo.delete(save=False)
             #     user.photo = request.FILES['photo']
             form.save()
+            messages.success(request, "Профиль успешно обновлен")
             return redirect('home')
         else:
             messages.error(request, "Ошибка при обновлении профиля")

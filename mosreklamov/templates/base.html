@@ -37,6 +37,7 @@
           {% else %}
             <i class="fa-solid fa-user user-icon" style="color: purple; font-size: 30px;"></i>
             <a href="{% url 'login' %}" class="input-registration login-link">Вход/Регистрация</a>
+            <a href="{% url 'social:begin' 'github' %}"><img src='{% static "images/github.png" %}'></a>
           {% endif %}
         </div>
       </div>
