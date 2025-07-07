@@ -1,9 +1,20 @@
 from django.contrib.auth.views import PasswordResetView, PasswordResetDoneView, \
     PasswordResetConfirmView, PasswordResetCompleteView, PasswordChangeDoneView
+from django.contrib.sitemaps.views import sitemap
 from django.urls import path, re_path, register_converter, reverse_lazy
 from django.contrib.auth import views as auth_views
+from django.views.decorators.cache import cache_page
+
 from . import views
+from .sitemaps import ArticleSitemap, CategorySitemap, StaticSitemap
 from .views import UserDeleteView
+
+
+sitemaps = {
+    'articles': ArticleSitemap,
+    'categories': CategorySitemap,
+    'static': StaticSitemap,
+}
 
 urlpatterns = [
     path('', views.index, name='home'),
@@ -34,11 +45,11 @@ urlpatterns = [
     path('password-reset/complete/', PasswordResetCompleteView.as_view(
         template_name="main_app/password_reset_complete.html"),
         name='password_reset_complete'),
-
     path('password-change/', views.UserPasswordChange.as_view(),
          name='password_change'),
     path('password-change/done/', PasswordChangeDoneView.as_view(
         template_name='main_app/password_change_done.html'),
         name='password_change_done'),
     path('account/delete/', UserDeleteView.as_view(), name='account_delete'),
+    path('sitemap.xml', cache_page(86400)(sitemap), {'sitemaps': sitemaps}, name='django.contrib.sitemaps.views.sitemap'),
 ]

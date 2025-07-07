@@ -911,7 +911,7 @@ a.back-to-category:hover:before {
   cursor: pointer;
 }
 
-/*===============Стили для форы регистрации=================*/
+/*===============Стили для формы регистрации=================*/
 .login-container {
     max-width: 400px;
     margin: 5vh auto;
@@ -1088,6 +1088,68 @@ a.back-to-category:hover:before {
 
 .login-container {
     animation: fadeIn 0.6s ease-out forwards;
+}
+
+/*====================Стили для капчи======================*/
+.captcha-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 20px 0;
+}
+
+.captcha-container img {
+    display: block;
+    margin: 0 auto 8px; /* Добавляем отступ снизу */
+}
+
+.captcha-container input[type="text"] {
+    width: 40% !important;
+    max-width: 220px;
+    margin: 10px auto 12px; /* Увеличиваем отступ снизу для кнопки */
+    padding: 12px 14px;
+    text-align: center;
+}
+
+/* Стили для кнопки обновления */
+.captcha-container .captcha-refresh {
+    display: inline-block;
+    padding: 10px 20px;
+    background: #f9f5ff;
+    border: 1px solid #e3d9ff;
+    border-radius: 8px;
+    color: #6a21a8;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    cursor: pointer;
+    box-shadow: 0 2px 6px rgba(106, 33, 168, 0.1);
+}
+
+.captcha-container .captcha-refresh:hover {
+    background: #6a21a8;
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(106, 33, 168, 0.2);
+    border-color: #6a21a8;
+}
+
+.captcha-container .captcha-refresh:active {
+    transform: translateY(0);
+}
+
+/* Иконка обновления (опционально) */
+.captcha-container .captcha-refresh::before {
+    content: "🔄";
+    margin-right: 6px;
+    font-size: 15px;
+}
+
+/* Ошибки */
+.captcha-container .error {
+    text-align: center;
+    margin-top: 10px;
 }
 
 /*=============Стили для создания нового пользователя=============*/

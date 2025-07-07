@@ -1,4 +1,6 @@
 import datetime
+
+from captcha.fields import CaptchaField
 from django import forms
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, \
@@ -78,6 +80,7 @@ class LoginUserForm(AuthenticationForm):
     username = forms.CharField(label='Логин', widget=forms.TextInput())
     password = forms.CharField(label='Пароль', widget=forms.PasswordInput())
     remember_me = forms.BooleanField(required=False, label='Запомнить меня')
+    captcha = CaptchaField()
     def clean_username(self):
         """
         Кастомная валидация поля username, позволяющая входить как по логину, так и по email.

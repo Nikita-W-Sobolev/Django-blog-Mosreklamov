@@ -22,8 +22,8 @@ main_menu = [{'title': 'ГЛАВНАЯ', 'url_name': 'home'},
              {'title': 'ДОБАВИТЬ СТАТЬЮ', 'url_name': 'dobavit_staty'},
              {'title': 'КОНТАКТЫ', 'url_name': 'contacts'}]
 
-tags = TagPost.objects.all()
-categories_list = Category.objects.all()
+tags = TagPost.objects.all().prefetch_related('tags')
+categories_list = Category.objects.all().prefetch_related('articles')
 
 def index(request):
     """
@@ -44,7 +44,7 @@ def show_category(request, cat_slug):
     Отображение статей выбранной категории с пагинацией.
     """
     category = get_object_or_404(Category, slug=cat_slug)
-    articles = category.articles.filter(is_published='published')
+    articles = category.articles.filter(is_published='published').select_related('author').prefetch_related('tags')
     # добавляем пагинацию
     paginator = Paginator(articles, 3)  # выводим articles(статьи) по 3 штуки за раз
     page_number = request.GET.get('page')  # Получаем номер страницы из GET-параметра
@@ -64,7 +64,7 @@ def show_article(request, art_slug):
     """
     Отображение отдельной статьи.
     """
-    article = get_object_or_404(Article, slug=art_slug, is_published='published')
+    article = get_object_or_404(Article.objects.select_related('categories'), slug=art_slug, is_published='published')
     category = article.categories
     data = {
         'title': f"Статья: {article.title}",
@@ -82,7 +82,7 @@ def show_tag_postlist(request, tag_slug):
     Отображение статей, связанных с определенным тегом, с пагинацией.
     """
     my_tag = get_object_or_404(TagPost, slug=tag_slug)
-    posts = my_tag.tags.filter(is_published='published')
+    posts = my_tag.tags.filter(is_published='published').select_related('categories').prefetch_related('tags')
     # добавляем пагинацию
     paginator = Paginator(posts, 5)  # выводим posts(статьи) по 5 штук за раз
     page_number = request.GET.get('page')  # Получаем номер страницы из GET-параметра
@@ -280,12 +280,14 @@ class LoginUser(LoginView):
     def get_success_url(self):  # Метод для определения URL, по которому перейдём после удачной авторизации
         return reverse_lazy('home')
 
+
 def logout_user(request):
     """
     Функция выхода пользователя из системы.
     """
     logout(request)
     return HttpResponseRedirect(reverse('login'))
+
 
 class UserPasswordChange(PasswordChangeView):
     """

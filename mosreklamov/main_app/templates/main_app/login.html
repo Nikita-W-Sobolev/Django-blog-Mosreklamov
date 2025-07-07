@@ -17,6 +17,15 @@
             {{form.remember_me}} <label for='{{form.remember_me.id_for_label}}'>Запомнить меня</label>
         </div>
 
+        <!-- Добавляем капчу -->
+        <div class="captcha-container">
+            <label for="id_captcha">Введите надпись с картинки:</label>
+            {{form.captcha}}
+            {% if form.captcha.errors %}
+                <div class="error">{{ form.captcha.errors }}</div>
+            {% endif %}
+        </div>
+
         <button type="submit" class="btn login-btn">ВОЙТИ</button>
         <a href="{% url 'register' %}" class="btn register-btn">ЗАРЕГИСТРИРОВАТЬСЯ</a>
         <div class="forgot-password">
