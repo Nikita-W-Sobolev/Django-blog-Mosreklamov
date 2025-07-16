@@ -1,0 +1,78 @@
+services:  # содержит все сервисы из которых состоит приложение
+
+  postgres:  # это сервис БД PostgreSQL
+    # docker run -d --rm --name psgr --network dbnet -e POSTGRES_DB=mydata
+    # -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=1234 -v postgres-data:/var/lib/postgresql/data postgres:17-alpine
+    image: postgres:17-alpine  # указываем имя образа
+    container_name: psgr  # указываем имя создаваемого контейнера
+#    command: "python manage.py runserver 127.0.0.1:8000"  в момент запуска сервиса будет срабатывать команда "python manage.py runserver 127.0.0.1:8000"
+    environment:  # тут прописывает атрибуты для PostgreSQL
+      - POSTGRES_USER=${DATABASE_USERNAME}
+      - POSTGRES_PASSWORD=${DATABASE_PASSWORD}
+      - POSTGRES_DB=${DATABASE_NAME}
+    volumes:  # тут прописываем том
+      - postgres-data:/var/lib/postgresql/data
+    networks:  # тут прописываем сеть
+      - dbnet
+
+  adminer:  # это сервис для Adminer
+    # docker run --rm -d --network dbnet --link psgr:db -p 8080:8080 adminer
+    image: adminer
+    container_name: adminer
+    ports:  # прописываем проброс портов
+      - "8080:8080"
+    links:  # тут прописываем link
+      - "postgres:db"
+    networks: # тут прописываем сеть
+      - dbnet
+    depends_on:  # тут прописываем сервис от которого зависит текущий сервис
+      - postgres
+
+  mosreklamov:  # сервис для запуска программы на flask
+    #  docker run --rm --network dbnet --link psgr:dbps -p 8000:4000 -v $(PWD):/app -d flask-back
+    build:  # указать путь к Dockerfile для создания образа
+      context: ./mosreklamov
+      dockerfile: Dockerfile
+    image: mosreklamov  # определяет имя образа, который будет создаваться
+    container_name: mosreklamov
+    restart: always  # если контейнер остановится, то он будет пытаться запуститься снова
+    command: "gunicorn -c gunicorn.py mosreklamov.wsgi"  # команда, выполняемая при запуске контейнера
+    env_file:  # подключаем файлы с переменными окружения
+      - .env
+    links: # тут прописываем alias при обращении к БД
+      - "postgres:dbps"
+    networks: # тут прописываем сеть
+      - dbnet
+    ports: # прописываем проброс портов
+      - "8000:8000"
+    volumes: # связываем папку с хоста с папкой в контейнере
+      - ./mosreklamov:/app/www/mosreklamov
+    depends_on: # тут прописываем сервис от которого зависит текущий сервис
+      - postgres
+
+  nginx:  # это сервис для Nginx
+    image: nginx:latest
+    container_name: nginx-server
+    restart: always
+    networks:
+      - dbnet
+    expose:
+      - 8088
+    ports:
+      - "8081:8088"
+    volumes:
+      - ./mosreklamov/staticfiles:/app/www/mosreklamov/staticfiles
+      - ./mosreklamov/media:/app/www/mosreklamov/media
+      - ./mosreklamov/logs:/app/www/mosreklamov/logs
+      - ./nginx/mosreklamov.conf:/etc/nginx/conf.d/mosreklamov.conf
+#      - ./nginx:/etc/nginx/conf.d
+    depends_on:
+      - mosreklamov
+
+
+networks:  # создаём свою сеть, которую прописали в сервисе
+  dbnet:
+    driver: bridge
+
+volumes:  # создаём том
+  postgres-data:
